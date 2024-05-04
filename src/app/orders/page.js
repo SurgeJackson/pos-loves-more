@@ -11,6 +11,7 @@ export default function OrdersPage() {
   const [loadingOrders, setLoadingOrders] = useState(true);
   const {loading, data:profile} = useProfile();
   const [categories, setCategories] = useState([]);
+  const [pos, setPos] = useState([]);
 
   useEffect(() => {
     fetchOrders();
@@ -32,6 +33,12 @@ export default function OrdersPage() {
     });
   }, []);
 
+  useEffect(() => {
+    fetch('/api/pos').then(res => {
+      res.json().then(pos => setPos(pos))
+    });
+  }, []);
+
   return (
     <section className="mt-8 max-w-2xl mx-auto">
       {/* <UserTabs isAdmin={profile.admin} /> */}
@@ -41,9 +48,10 @@ export default function OrdersPage() {
         )}
         {orders?.length > 0 && orders.map(order => (
           <div key={order._id}
-            className="bg-gray-100 mb-2 p-4 rounded-lg flex flex-row justify-between items-start gap-4">
-              <div className="flex flex-col gap-2 items-center mb-1">
-                <div className="text-sm">{order.userEmail}</div>
+            className="bg-gray-100 mb-2 p-4 rounded-lg flex flex-row justify-between items-start gap-2">
+              <div className="flex flex-col gap-1 items-center mb-1">
+                <div className="text-sm text-center">{order.userEmail}<br/>{pos.find(c => c._id === order.pos).name}
+                </div>
                 <div className="text-gray-500 text-sm">{dbTimeForHuman(order.createdAt)}</div>
               </div>
               <div className="text-gray-500 text-xs text-center">
