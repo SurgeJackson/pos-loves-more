@@ -19,8 +19,9 @@ export default function CartProduct({index, product, onRemove}) {
         <h3 className="font-semibold">
           {product.name}
         </h3>
-        {categories.filter(c => c._id === product.category).map((c, index) => (<div key={index} className="text-xs font-extralight">{c.name}</div>))}
-
+        <div key={index} className="text-xs font-extralight">
+          {categories.find(c => c._id === product.category)?.name}
+        </div>
         {product.size && (
           <div className="text-sm">
             Size: <span>{product.size.name}</span>

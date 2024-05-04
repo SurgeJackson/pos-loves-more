@@ -69,14 +69,17 @@ export default function Footer() {
             <div className="text-xs font-extralight">
               {product.name}
             </div>
-            {categories.filter(c => c._id === product.category).map((c, index) => (<div key={index} className="text-xs font-extralight">{c.name}</div>))}
+            <div key={index} className="text-xs font-extralight">
+              {categories.find(c => c._id === product.category)?.name}
+            </div>
             <div className="text-xs font-extralight">
               {cartProductPrice(product).toLocaleString()}&#8381;
             </div>
           </div>
         ))}
       </div>
-      {cartProducts?.length > 0 && (<><Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
+      {cartProducts?.length > 0 && (<>
+      <Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
       <input type="text" id="coupon" name="coupon" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Промо код"/></>
       )}
       <div onClick={proceedToCheckout} className={`cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm ${cartProducts?.length > 0 ? "bg-primary text-white" : "text-body-color bg-gray-200 cursor-default"}`}>

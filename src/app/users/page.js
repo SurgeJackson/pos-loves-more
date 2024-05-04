@@ -42,7 +42,7 @@ export default function UsersPage() {
             </div>
             <div>
               <Link className="button" href={'/users/'+user._id}>
-                Edit
+                Редактировать
               </Link>
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function UserTabs({isAdmin}) {
         className={path === '/profile' ? 'active' : ''}
         href={'/profile'}
       >
-        Profile
+        Профиль
       </Link>
       {isAdmin && (
         <>
@@ -18,19 +18,19 @@ export default function UserTabs({isAdmin}) {
             href={'/categories'}
             className={path === '/categories' ? 'active' : ''}
           >
-            Categories
+            Категории
           </Link>
           <Link
             href={'/menu-items'}
             className={path.includes('menu-items') ? 'active' : ''}
           >
-            Menu Items
+            Товары
           </Link>
           <Link
             className={path.includes('/users') ? 'active' : ''}
             href={'/users'}
           >
-            Users
+            Пользователи
           </Link>
           <Link
             className={path.includes('/pos') ? 'active' : ''}
@@ -44,7 +44,7 @@ export default function UserTabs({isAdmin}) {
         className={path === '/orders' ? 'active' : ''}
         href={'/orders'}
       >
-        Orders
+        Заказы
       </Link>
     </div>
   );

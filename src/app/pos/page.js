@@ -89,7 +89,7 @@ export default function PosPage() {
         <div className="flex gap-2 items-end">
           <div className="grow">
             <label>
-              {setEditedPos ? 'Update POS' : 'New POS name'}
+              {setEditedPos ? 'Редактировать POS' : 'Наименование POS'}
               {editedPos && (
                 <>: <b>{editedPos.name}</b></>
               )}
@@ -101,7 +101,7 @@ export default function PosPage() {
           </div>
           <div className="pb-2 flex gap-2">
             <button className="border border-primary" type="submit">
-              {editedPos ? 'Update' : 'Create'}
+              {editedPos ? 'Редактировать' : 'Создать'}
             </button>
             <button
               type="button"
@@ -109,13 +109,13 @@ export default function PosPage() {
                 setEditedPos(null);
                 setPosName('');
               }}>
-              Cancel
+              Отменить
             </button>
           </div>
         </div>
       </form>
       <div>
-        <h2 className="mt-8 text-sm text-gray-500">Existing POS</h2>
+        <h2 className="mt-8 text-sm text-gray-500">Список POS</h2>
         {poses?.length > 0 && poses.map(c => (
           <div
             key={c._id}
@@ -130,10 +130,10 @@ export default function PosPage() {
                         setPosName(c.name);
                       }}
               >
-                Edit
+                Редактировать
               </button>
               <DeleteButton
-                label="Delete"
+                label="Удалить"
                 onDelete={() => handleDeleteClick(c._id)} />
             </div>
           </div>
