@@ -3,6 +3,7 @@ import {signIn} from "next-auth/react";
 import {useEffect, useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
 import LoginError from "@/components/layout/LoginError";
+import { Suspense } from 'react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -30,10 +31,16 @@ export default function LoginPage() {
       });
     });
   }, []);
+  
+  function LoginErrorFallback() {
+    return <>placeholder</>
+  }
 
   return (
     <section className="mt-8">
-      {<LoginError/>}
+      <Suspense fallback={<LoginErrorFallback />}>
+          <LoginError />
+      </Suspense>
       <h1 className="text-center text-primary text-4xl mb-4">
         Вход в систему
       </h1>
