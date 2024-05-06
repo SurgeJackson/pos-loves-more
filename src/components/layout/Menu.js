@@ -35,7 +35,7 @@ export default function Menu() {
       </div>
       {categories?.length > 0 && categories.map((c, index) => (
         <div key={index} className={`grid grid-cols-5 gap-1 ${open === index ? "block" : "hidden"} `}>
-          {menuItems.filter(item => item.category === c._id).map(item => (
+          {menuItems.filter(item => item.category._id === c._id).map(item => (
             <MenuItem key={item._id} {...item} />
          ))}
         </div>

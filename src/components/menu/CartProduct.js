@@ -1,17 +1,7 @@
 import {cartProductPrice} from "@/components/AppContext";
 import Trash from "@/components/icons/Trash";
-import Image from "next/image";
-import {useContext, useState} from "react";
-import {useEffect} from "react";
 
 export default function CartProduct({index, product, onRemove}) {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => setCategories(categories))
-    });
-  }, []);
 
   return (
     <div className="flex items-center gap-2 border-b py-2">
@@ -20,7 +10,7 @@ export default function CartProduct({index, product, onRemove}) {
           {product.name}
         </h3>
         <div key={index} className="text-xs font-extralight">
-          {categories.find(c => c._id === product.category)?.name}
+          {product.category.name}
         </div>
         {product.size && (
           <div className="text-sm">

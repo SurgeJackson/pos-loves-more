@@ -7,10 +7,8 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 
 export default function MenuItemsPage() {
-
   const [menuItems, setMenuItems] = useState([]);
   const {loading, data} = useProfile();
-  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     fetch('/api/menu-items').then(res => {
@@ -18,12 +16,6 @@ export default function MenuItemsPage() {
         setMenuItems(menuItems);
       });
     })
-  }, []);
-
-  useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => setCategories(categories))
-    });
   }, []);
 
   if (loading) {
@@ -62,7 +54,7 @@ export default function MenuItemsPage() {
               <div className="text-center">
                 {item.name}
               </div>
-              {categories.filter(c => c._id === item.category).map((c, index) => (<div key={index} className="text-xs text-center font-extralight">{c.name}</div>))}
+              <div className="text-xs text-center font-extralight">{item.category.name}</div>
             </Link>
           ))}
         </div>

@@ -6,7 +6,6 @@ import {signOut, useSession} from "next-auth/react";
 import Link from "next/link";
 import {useContext, useState} from "react";
 import Switch from "@/components/menu/Switch";
-import {useEffect} from "react";
 import toast from "react-hot-toast";
 
 export default function Footer() {
@@ -16,19 +15,12 @@ export default function Footer() {
   let userName = userData?.name || userData?.email;
   const {cartProducts,removeCartProduct, pos} = useContext(CartContext);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [payCash, setPayCash] = useState(false);
 
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
   }
-
-  useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => setCategories(categories))
-    });
-  }, []);
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
@@ -70,7 +62,7 @@ export default function Footer() {
               {product.name}
             </div>
             <div key={index} className="text-xs font-extralight">
-              {categories.find(c => c._id === product.category)?.name}
+              {product.category.name}
             </div>
             <div className="text-xs font-extralight">
               {cartProductPrice(product).toLocaleString()}&#8381;
