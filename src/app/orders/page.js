@@ -37,8 +37,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
-      {/* <UserTabs isAdmin={profile.admin} /> */}
+    <section className="mt-8 max-w-2xl mx-auto w-full">
       <input type="date" id="reportDate" name="reportDate" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={reportDate} placeholder="Дата" onChange={ev => (setReportDate(ev.target.value))}/>
       <div className="mt-8">
         {loadingOrders && (
@@ -57,18 +56,13 @@ export default function OrdersPage() {
           ))}
           </div>
           <div className="text-center">
-            {(order.cartProducts.reduce(function(tot, arr) {return tot + arr.basePrice},0)-order.discount).toLocaleString()}&#8381;    
+            {(order.cartProducts.reduce(function(tot, arr) {return tot + arr.basePrice},0) - order.discount).toLocaleString()}&#8381;    
             <div className={
               (order.payCash ? 'bg-green-500' : 'bg-red-400')
               + ' p-1 rounded-md text-white w-24 text-center text-sm'}>
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
           </div>
-          {/* <div className="justify-end flex gap-2 items-center whitespace-nowrap">
-            <Link href={"/orders/"+order._id} className="button">
-              Открыть заказ
-            </Link>
-          </div> */}
         </div>
         ))}
       </div>
