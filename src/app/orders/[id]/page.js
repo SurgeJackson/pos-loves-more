@@ -65,6 +65,18 @@ export default function OrderPage() {
                 {subtotal.toLocaleString()}&#8381;
               </span>
             </div>
+            <div className="text-right py-2 text-gray-500">
+              Скидка:
+              <span className="text-black font-bold inline-block w-8">
+                {order.discount.toLocaleString()}&#8381;
+              </span>
+            </div>
+            <div className="text-right py-2 text-gray-500">
+              Итого со скидкой:
+              <span className="text-black font-bold inline-block w-8">
+                {(subtotal - order.discount).toLocaleString()}&#8381;
+              </span>
+            </div>
           {/* </div> */}
           {/* <div>
             <div className="bg-gray-100 p-4 rounded-lg">

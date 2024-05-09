@@ -8,9 +8,21 @@ const stripe = require('stripe')(process.env.STRIPE_SK);
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
 
-  const {cartProducts, address, payCash, pos} = await req.json();
+  const {cartProducts, address, payCash, pos, discount} = await req.json();
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;
+
+  let subtotal = 0;
+  for (const p of cartProducts) {
+    subtotal += p.basePrice;
+  }
+
+  let dist_discount = discount;
+  for (const p of cartProducts) {
+    let price_discount = Math.ceil(discount * (p.basePrice/subtotal));
+    p.discount = price_discount > dist_discount ? dist_discount : price_discount;
+    dist_discount -= p.discount;
+  }
 
   const orderDoc = await Order.create({
     userEmail,
@@ -19,6 +31,7 @@ export async function POST(req) {
     paid: false,
     payCash: payCash,
     pos: pos,
+    discount: discount,
   });
 
   // const stripeLineItems = [];

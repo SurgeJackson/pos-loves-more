@@ -13,14 +13,16 @@ export default function Footer() {
   const status = session?.status;
   const userData = session.data?.user;
   let userName = userData?.name || userData?.email;
-  const {cartProducts,removeCartProduct, pos} = useContext(CartContext);
+  const {cartProducts, removeCartProduct, pos} = useContext(CartContext);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [payCash, setPayCash] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
   }
+  subtotal -= discount;
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
@@ -34,7 +36,8 @@ export default function Footer() {
           //address,
           cartProducts,
           payCash,
-          pos
+          pos,
+          discount
         }),
       }).then(async (response) => {
         if (response.ok) {
@@ -72,8 +75,12 @@ export default function Footer() {
       </div>
       {cartProducts?.length > 0 && (<>
       <Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
+
+      <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
+
       <input type="text" id="coupon" name="coupon" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Промо код"/></>
       )}
+
       <div onClick={proceedToCheckout} className={`cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm ${cartProducts?.length > 0 ? "bg-primary text-white" : "text-body-color bg-gray-200 cursor-default"}`}>
         {cartProducts?.length > 0 ? `Оформить заказ ${cartProducts.length} шт, сумма ${subtotal.toLocaleString()}\u20BD` : "Начните выбирать товары"}
       </div>
