@@ -19,12 +19,9 @@ export default function EditMenuItemPage() {
   const {loading, data} = useProfile();
 
   useEffect(() => {
-    fetch('/api/menu-items').then(res => {
-      res.json().then(items => {
-        const item = items.find(i => i._id === id);
-        setMenuItem(item);
-      });
-    })
+    fetch('/api/menu-items?_id='+id).then(res => {
+      res.json().then(item => setMenuItem(item))
+    });
   }, []);
 
   async function handleFormSubmit(ev, data) {

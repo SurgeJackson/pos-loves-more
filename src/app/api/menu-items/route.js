@@ -22,9 +22,18 @@ export async function PUT(req) {
   return Response.json(true);
 }
 
-export async function GET() {
+export async function GET(req) {
+  const url = new URL(req.url);
+  const _id = url.searchParams.get('_id');
+  
   mongoose.connect(process.env.MONGO_URL);
-    
+
+  if (_id) {
+    return Response.json( 
+      await MenuItem.findById(_id) 
+    );
+  }
+
   return Response.json(
     await MenuItem.find().populate("category")
   );
