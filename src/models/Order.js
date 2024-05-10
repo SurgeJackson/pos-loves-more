@@ -12,6 +12,7 @@ const OrderSchema = new Schema({
   payCash: {type: Boolean, default: false},
   pos: Object,
   discount: {type: Number},
+  checked: {type: Boolean, default: false},
 }, {timestamps: true});
 
 export const Order = models?.Order || model('Order', OrderSchema);

@@ -48,6 +48,15 @@ export async function GET(req) {
 
 }
 
+export async function PUT(req) {
+  mongoose.connect(process.env.MONGO_URL);
+
+  const {_id, ...data} = await req.json();
+  await Order.findByIdAndUpdate(_id, data);
+  
+  return Response.json(true);
+}
+
 export async function DELETE(req) {
   mongoose.connect(process.env.MONGO_URL);
   const url = new URL(req.url);

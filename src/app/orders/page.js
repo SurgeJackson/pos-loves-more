@@ -3,8 +3,8 @@ import {useProfile} from "@/components/UseProfile";
 import {useEffect, useState} from "react";
 import {getCurrentDate} from "@/components/AppContext";
 import Trash from "@/components/icons/Trash";
+import Check from "@/components/icons/Check";
 import toast from "react-hot-toast";
-import DeleteButton from "@/components/DeleteButton";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -42,6 +42,27 @@ export default function OrdersPage() {
     })
   }
 
+ 
+  async function handleCheckClick(_id) {
+    const creationPromise = new Promise(async (resolve, reject) => {
+      const data = {_id:_id};
+      if (_id) {
+        data.checked = true;
+      }
+      const response = await fetch('/api/orders', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      fetchOrders();
+      if (response.ok)
+        resolve();
+      else
+        reject();
+    });
+  }
+
+
   async function handleDeleteClick(_id) {
     const promise = new Promise(async (resolve, reject) => {
       const response = await fetch('/api/orders?_id='+_id, {
@@ -64,34 +85,6 @@ export default function OrdersPage() {
     fetchSalesByGoodsReport();
     fetchPayCashReport();
   }
-  // function test() {
-  //   const promise = new Promise((resolve, reject) => {
-  //     fetch('https://admin.p1sms.ru/apiSms/create', 
-  //     {
-  //       method: 'POST',
-  //       headers: {'Content-Type':'application/json'},
-  //       body: JSON.stringify(
-  //       {
-  //         "apiKey": "YghwrNsJS0vKekZ7p5KkICFzZ0gl0zTe2PJdgc0VDKzfbeGy8sgl5WukyOMG",
-  //         "sms": [
-  //           {
-  //             "channel": "digit",
-  //             "phone": "79211862321",
-  //             "text": "Вы успешно зарегистрированы в LOVESMORE - Ваш промокод 3459"
-  //           }
-  //         ]
-  //       }),
-  //     }).then(async (response) => {
-  //       if (response.ok) {
-  //         resolve();
-  //         console.log(response.json());
-  //       } else {
-  //         reject();
-  //         console.log(response.json());
-  //       }
-  //     });
-  //   });
-  // }
 
   return (
     <section className="mt-8 max-w-2xl mx-auto w-full">
@@ -122,6 +115,7 @@ export default function OrdersPage() {
             </div>
           </div>
           <div className="text-right w-1/4">
+          {!order.checked && (
             <button
               type="button"
               onClick={() => { 
@@ -130,6 +124,15 @@ export default function OrdersPage() {
               className="p-2">
               <Trash />
             </button>
+          )}
+          {!order.checked && (
+            <button
+              type="button"
+              onClick={() => {handleCheckClick(order._id) } }
+              className="p-2">
+              <Check className="text-green-500 w-8 h-8"/>
+            </button>
+          )}
           </div>
         </div>
         ))}
