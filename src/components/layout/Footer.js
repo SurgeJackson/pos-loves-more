@@ -28,32 +28,34 @@ export default function Footer() {
     ev.preventDefault();
     // address and shopping cart products
 
-    const promise = new Promise((resolve, reject) => {
-      fetch('/api/checkout', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-          //address,
-          cartProducts,
-          payCash,
-          pos,
-          discount
-        }),
-      }).then(async (response) => {
-        if (response.ok) {
-          resolve();
-          window.location = await response.json();
-        } else {
-          reject();
-        }
+    if (cartProducts?.length > 0) {
+      const promise = new Promise((resolve, reject) => {
+        fetch('/api/checkout', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            //address,
+            cartProducts,
+            payCash,
+            pos,
+            discount
+          }),
+        }).then(async (response) => {
+          if (response.ok) {
+            resolve();
+            window.location = await response.json();
+          } else {
+            reject();
+          }
+        });
       });
-    });
-
-    await toast.promise(promise, {
-      loading: 'Preparing your order...',
-      success: 'Redirecting to payment...',
-      error: 'Something went wrong... Please try again later',
-    })
+  
+      await toast.promise(promise, {
+        loading: 'Preparing your order...',
+        success: 'Redirecting to payment...',
+        error: 'Something went wrong... Please try again later',
+      })
+    }
   }
 
   return (
@@ -76,7 +78,7 @@ export default function Footer() {
       {cartProducts?.length > 0 && (<>
       <Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
 
-      <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
+      <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={discount} placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
 
       <input type="text" id="coupon" name="coupon" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Промо код"/></>
       )}

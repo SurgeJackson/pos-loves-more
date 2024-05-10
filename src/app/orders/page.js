@@ -2,6 +2,9 @@
 import {useProfile} from "@/components/UseProfile";
 import {useEffect, useState} from "react";
 import {getCurrentDate} from "@/components/AppContext";
+import Trash from "@/components/icons/Trash";
+import toast from "react-hot-toast";
+import DeleteButton from "@/components/DeleteButton";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -13,14 +16,21 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders();
+    fetchPayCashReport();
+    fetchSalesByGoodsReport();
+  }, [reportDate]);
+
+  function fetchPayCashReport() {
     fetch('/api/payCashReport?date='+reportDate).then(res => {
       res.json().then(payCashReport => setPayCashReport(payCashReport))
     });
+  }
 
+  function fetchSalesByGoodsReport() {
     fetch('/api/salesByGoodsReport?date='+reportDate).then(res => {
       res.json().then(salesByGoodsReport => setSalesByGoodsReport(salesByGoodsReport))
     });
-  }, [reportDate]);
+  }
 
   function fetchOrders() {
     setLoadingOrders(true);
@@ -32,6 +42,57 @@ export default function OrdersPage() {
     })
   }
 
+  async function handleDeleteClick(_id) {
+    const promise = new Promise(async (resolve, reject) => {
+      const response = await fetch('/api/orders?_id='+_id, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+
+    await toast.promise(promise, {
+      loading: 'Удаление заказа...',
+      success: 'Заказ удален',
+      error: 'Ошибка при удалении',
+    });
+
+    fetchOrders();
+    fetchSalesByGoodsReport();
+    fetchPayCashReport();
+  }
+  // function test() {
+  //   const promise = new Promise((resolve, reject) => {
+  //     fetch('https://admin.p1sms.ru/apiSms/create', 
+  //     {
+  //       method: 'POST',
+  //       headers: {'Content-Type':'application/json'},
+  //       body: JSON.stringify(
+  //       {
+  //         "apiKey": "YghwrNsJS0vKekZ7p5KkICFzZ0gl0zTe2PJdgc0VDKzfbeGy8sgl5WukyOMG",
+  //         "sms": [
+  //           {
+  //             "channel": "digit",
+  //             "phone": "79211862321",
+  //             "text": "Вы успешно зарегистрированы в LOVESMORE - Ваш промокод 3459"
+  //           }
+  //         ]
+  //       }),
+  //     }).then(async (response) => {
+  //       if (response.ok) {
+  //         resolve();
+  //         console.log(response.json());
+  //       } else {
+  //         reject();
+  //         console.log(response.json());
+  //       }
+  //     });
+  //   });
+  // }
+
   return (
     <section className="mt-8 max-w-2xl mx-auto w-full">
       <input type="date" id="reportDate" name="reportDate" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={reportDate} placeholder="Дата" onChange={ev => (setReportDate(ev.target.value))}/>
@@ -40,24 +101,35 @@ export default function OrdersPage() {
           <div>Загрузка заказов...</div>
         )}
         {orders?.length > 0 && orders.map(order => (
-        <div key={order._id} className="bg-gray-100 mb-2 px-4 py-2 rounded-lg flex flex-row justify-between items-start gap-2">
-          <div className="flex flex-col gap-1 items-center mb-1">
-            <div className="text-sm text-center">{order.userEmail}<br/>{order.pos.name}
+        <div key={order._id} className="bg-gray-100 mb-2 px-4 py-2 rounded-lg flex flex-row justify-around items-start gap-2">
+          <div className="flex flex-col gap-1 items-start mb-1 w-1/4">
+            <div className="text-xs truncate w-full">{order.userEmail}
             </div>
-            <div className="text-gray-500 text-sm">{new Date(Date.parse(order.createdAt)).toLocaleString()}</div>
+            <div className="text-xs">{order.pos.name}</div>
+            <div className="text-gray-500 text-xs">{new Date(Date.parse(order.createdAt)).toLocaleString()}</div>
           </div>
-          <div className="text-gray-500 text-xs text-center">
+          <div className="text-gray-500 text-xs text-center w-1/2">
           {order.cartProducts.map((product) => (
               product.name + '(' + product.category.name + ') '
           ))}
           </div>
-          <div className="text-center">
+          <div className="text-center w-1/4">
             {(order.cartProducts.reduce(function(tot, arr) {return tot + arr.basePrice},0) - order.discount).toLocaleString()}&#8381;    
             <div className={
               (order.payCash ? 'bg-green-500' : 'bg-red-400')
               + ' p-1 rounded-md text-white w-24 text-center text-sm'}>
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
+          </div>
+          <div className="text-right w-1/4">
+            <button
+              type="button"
+              onClick={() => { 
+                if (window.confirm('Удалить заказ?')) handleDeleteClick(order._id)
+              } }
+              className="p-2">
+              <Trash />
+            </button>
           </div>
         </div>
         ))}
@@ -93,6 +165,9 @@ export default function OrdersPage() {
         </div>
       ))}
       </div>
+      {/* <div onClick={test} className="cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm bg-primary text-white">
+        TEST
+      </div> */}
     </section>
   );
 }
