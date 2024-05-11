@@ -40,14 +40,13 @@ export async function GET(req) {
     return Response.json( await Order.findById(_id) );
   }
 
-  if (admin) {
+  //if (admin) {
     return Response.json( await Order.aggregate(agg));
-  }
+  //}
 
-  if (userEmail) {
-    return Response.json( await Order.find({userEmail}) );
-  }
-
+  //if (userEmail) {
+  //  return Response.json( await Order.find({userEmail}) );
+  //}
 }
 
 export async function PUT(req) {

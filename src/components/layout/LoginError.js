@@ -21,5 +21,4 @@ export default function LoginError() {
       const errorMessage = error && (errors[error] ?? errors.default);
       
       return (<div className="text-center text-primary font-semibold">{errorMessage}</div>);
-      
 }

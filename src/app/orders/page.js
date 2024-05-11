@@ -1,9 +1,9 @@
 'use client';
-import {CartContext} from "@/components/AppContext";
-import {useSession} from "next-auth/react";
-import {useProfile} from "@/components/UseProfile";
+import {CartContext, getCurrentDate} from "@/components/AppContext";
 import {useEffect, useState, useContext} from "react";
-import {getCurrentDate} from "@/components/AppContext";
+import PayCashReport from "@/components/layout/PayCashReport";
+import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
+
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
 import toast from "react-hot-toast";
@@ -12,20 +12,14 @@ export default function OrdersPage() {
   const {pos} = useContext(CartContext);
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const {loading, data:profile} = useProfile();
-  const [payCashReport, setPayCashReport] = useState([]);
-  const [salesByGoodsReport, setSalesByGoodsReport] = useState([]);
   const [poses, setPoses] = useState([]);
   const [uPos, setUPos] = useState();
-
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
     fetchPoses();
     fetchOrders(ps);
-    fetchPayCashReport(ps);
-    fetchSalesByGoodsReport(ps);
   }, [reportDate, uPos]);
 
   function fetchPoses() {
@@ -33,18 +27,6 @@ export default function OrdersPage() {
       res.json().then(poses => {
         setPoses(poses);
       });
-    });
-  }
-
-  function fetchPayCashReport(pos) {
-    fetch('/api/payCashReport?date='+reportDate+'&pos='+pos).then(res => {
-      res.json().then(payCashReport => setPayCashReport(payCashReport))
-    });
-  }
-
-  function fetchSalesByGoodsReport(pos) {
-    fetch('/api/salesByGoodsReport?date='+reportDate+'&pos='+pos).then(res => {
-      res.json().then(salesByGoodsReport => setSalesByGoodsReport(salesByGoodsReport))
     });
   }
 
@@ -97,7 +79,6 @@ export default function OrdersPage() {
 
     fetchOrders();
     fetchSalesByGoodsReport();
-    fetchPayCashReport();
   }
 
   return (
@@ -111,6 +92,9 @@ export default function OrdersPage() {
           ))}
         </select>
       </div>
+      
+      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
+
       <div className="mt-2">
         {loadingOrders && (
           <div>Загрузка заказов...</div>
@@ -159,40 +143,8 @@ export default function OrdersPage() {
         </div>
         ))}
       </div>
-      {payCashReport.map((rep, index) => (
-        <div key={index} className="flex flex-row gap-2 p-2 justify-between">
-          <div className={
-            (rep.payCash ? 'bg-green-500' : 'bg-red-400')
-              + ' p-1 rounded-md text-white w-24 text-center text-sm'
-            }>
-            {rep.payCash ? 'Наличные' : 'Карта'}
-          </div>
-          <div className="text-center">
-            {(rep.total_value-rep.total_discount).toLocaleString()}&#8381;
-          </div>
-        </div>
-      ))}
-      <div className="flex flex-row gap-2 p-2 justify-between">
-        <div className="p-1 rounded-md w-24 text-center text-sm">
-          Итого
-        </div>
-        <div className="text-center">
-          {(payCashReport.reduce((tot, val) => tot + val.total_value - val.total_discount, 0 )).toLocaleString()}&#8381;
-        </div>  
-      </div>
-      <div className="flex flex-col gap-2 p-2">
-      {salesByGoodsReport.map(rep => (
-        <div key={rep._id} className="flex flex-row gap-2 justify-items-center justify-between">
-          <div className="w-full">{rep.product}</div>
-          <div className="w-full">{rep.category}</div>
-          <div className="text-right w-full">{rep.quantity}</div>
-          <div className="text-right w-full">{(rep.total - rep.total_discount).toLocaleString()}&#8381;</div>
-        </div>
-      ))}
-      </div>
-      {/* <div onClick={test} className="cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm bg-primary text-white">
-        TEST
-      </div> */}
+
+      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
     </section>
   );
 }
