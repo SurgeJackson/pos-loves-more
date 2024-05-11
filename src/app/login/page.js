@@ -51,7 +51,6 @@ export default function LoginPage() {
         <input type="password" name="password" placeholder="password" value={password}
                disabled={loginInProgress}
                onChange={ev => setPassword(ev.target.value)}/>
-
         <label>POS</label>
         <select value={uPos} onChange={ev => setUPos(ev.target.value)}>
           <option key={1} value={0}></option>

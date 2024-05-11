@@ -12,6 +12,8 @@ export async function GET(req) {
   const userEmail = session?.user?.email;
   const admin = await isAdmin();
   const date = url.searchParams.get('date');
+  const pos = url.searchParams.get('pos');
+  const _id = url.searchParams.get('_id');
 
   const agg = [
     {
@@ -28,12 +30,12 @@ export async function GET(req) {
       '$match': {
         'yearMonthDayUTC': {
           '$eq': date
-        }
+        },
+        'pos._id': pos
       }
     }
   ];
 
-  const _id = url.searchParams.get('_id');
   if (_id) {
     return Response.json( await Order.findById(_id) );
   }

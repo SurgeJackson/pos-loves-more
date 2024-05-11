@@ -1,40 +1,56 @@
 'use client';
+import {CartContext} from "@/components/AppContext";
+import {useSession} from "next-auth/react";
 import {useProfile} from "@/components/UseProfile";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {getCurrentDate} from "@/components/AppContext";
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
 import toast from "react-hot-toast";
 
 export default function OrdersPage() {
+  const {pos} = useContext(CartContext);
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const {loading, data:profile} = useProfile();
   const [payCashReport, setPayCashReport] = useState([]);
   const [salesByGoodsReport, setSalesByGoodsReport] = useState([]);
+  const [poses, setPoses] = useState([]);
+  const [uPos, setUPos] = useState();
+
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
 
   useEffect(() => {
-    fetchOrders();
-    fetchPayCashReport();
-    fetchSalesByGoodsReport();
-  }, [reportDate]);
+    const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
+    fetchPoses();
+    fetchOrders(ps);
+    fetchPayCashReport(ps);
+    fetchSalesByGoodsReport(ps);
+  }, [reportDate, uPos]);
 
-  function fetchPayCashReport() {
-    fetch('/api/payCashReport?date='+reportDate).then(res => {
+  function fetchPoses() {
+    fetch('/api/pos').then(res => {
+      res.json().then(poses => {
+        setPoses(poses);
+      });
+    });
+  }
+
+  function fetchPayCashReport(pos) {
+    fetch('/api/payCashReport?date='+reportDate+'&pos='+pos).then(res => {
       res.json().then(payCashReport => setPayCashReport(payCashReport))
     });
   }
 
-  function fetchSalesByGoodsReport() {
-    fetch('/api/salesByGoodsReport?date='+reportDate).then(res => {
+  function fetchSalesByGoodsReport(pos) {
+    fetch('/api/salesByGoodsReport?date='+reportDate+'&pos='+pos).then(res => {
       res.json().then(salesByGoodsReport => setSalesByGoodsReport(salesByGoodsReport))
     });
   }
 
-  function fetchOrders() {
+  function fetchOrders(pos) {
     setLoadingOrders(true);
-    fetch('/api/orders?date='+reportDate).then(res => {
+    fetch('/api/orders?date='+reportDate+'&pos='+pos).then(res => {
       res.json().then(orders => {
         setOrders(orders.reverse());
         setLoadingOrders(false);
@@ -42,7 +58,6 @@ export default function OrdersPage() {
     })
   }
 
- 
   async function handleCheckClick(_id) {
     const creationPromise = new Promise(async (resolve, reject) => {
       const data = {_id:_id};
@@ -61,7 +76,6 @@ export default function OrdersPage() {
         reject();
     });
   }
-
 
   async function handleDeleteClick(_id) {
     const promise = new Promise(async (resolve, reject) => {
@@ -88,8 +102,16 @@ export default function OrdersPage() {
 
   return (
     <section className="mt-8 max-w-2xl mx-auto w-full">
-      <input type="date" id="reportDate" name="reportDate" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={reportDate} placeholder="Дата" onChange={ev => (setReportDate(ev.target.value))}/>
-      <div className="mt-8">
+      <div className="flex flex-col gap-2">
+        <input type="date" id="reportDate" name="reportDate" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={reportDate} placeholder="Дата" onChange={ev => (setReportDate(ev.target.value))}/>
+
+        <select id="uPos" name="uPos" value={uPos ? uPos : pos._id} onChange={ev => setUPos(ev.target.value)}>
+          {poses?.length > 0 && poses.map(c => (
+            <option key={c._id} value={c._id}>{c.name}</option>
+          ))}
+        </select>
+      </div>
+      <div className="mt-2">
         {loadingOrders && (
           <div>Загрузка заказов...</div>
         )}

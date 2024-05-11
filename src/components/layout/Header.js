@@ -57,35 +57,6 @@ export default function Header() {
   }
   return (
     <header className="bg-white">
-      {/* <div className="flex items-center md:hidden justify-between">
-        <Link className="text-primary font-semibold text-2xl" href={'/'}>
-          LOVES MORE
-        </Link>
-        <div className="flex gap-8 items-center">
-          <Link href={'/cart'} className="relative">
-            <ShoppingCart />
-            {cartProducts?.length > 0 && (
-              <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
-            {cartProducts.length}
-          </span>
-            )}
-          </Link>
-          <button
-            className="p-1 border"
-            onClick={() => setMobileNavOpen(prev => !prev)}>
-            <Bars2 />
-          </button>
-        </div>
-      </div> */}
-      {/* {mobileNavOpen && (
-        <div
-          onClick={() => setMobileNavOpen(false)}
-          className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center">
-          <Link href={'/'}>Home</Link>
-          <Link href={'/menu'}>Menu</Link>
-          <AuthLinks status={status} userName={userName} />
-        </div>
-      )} */}
       <div className="flex items-center justify-between">
         <nav className="flex items-center gap-2 text-gray-500 font-semibold">
           <Link className="text-black border-b-8 border-[#fff089] font-semibold text-lg" href={'/'}>

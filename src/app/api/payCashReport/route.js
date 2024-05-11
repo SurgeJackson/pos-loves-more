@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 export async function GET(req) {
   const url = new URL(req.url);
   const date = url.searchParams.get('date');
+  const pos = url.searchParams.get('pos');
+
   const agg = [
     {
       '$addFields': {
@@ -19,7 +21,8 @@ export async function GET(req) {
       '$match': {
         'yearMonthDayUTC': {
           '$eq': date
-        }
+        },
+        'pos._id': pos
       }
     }, {
       '$unwind': {
