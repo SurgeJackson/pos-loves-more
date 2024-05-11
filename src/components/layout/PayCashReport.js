@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 
-export default function PayCashReport({pos, reportDate}) {
+export default function PayCashReport({pos, reportDate, reLoad}) {
   const [payCashReport, setPayCashReport] = useState([]);
 
   useEffect(() => {
     fetchPayCashReport(pos);
-  }, [pos, reportDate]);
+  }, [pos, reportDate, reLoad]);
 
   function fetchPayCashReport(pos) {
     fetch('/api/payCashReport?date='+reportDate+'&pos='+pos).then(res => {

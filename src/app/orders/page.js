@@ -18,6 +18,7 @@ export default function OrdersPage() {
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
+    setUPos(ps);
     fetchPoses();
     fetchOrders(ps);
   }, [reportDate, uPos]);
@@ -40,7 +41,7 @@ export default function OrdersPage() {
     })
   }
 
-  async function handleCheckClick(_id) {
+  async function handleCheckClick(_id, uPos) {
     const creationPromise = new Promise(async (resolve, reject) => {
       const data = {_id:_id};
       if (_id) {
@@ -51,7 +52,7 @@ export default function OrdersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      fetchOrders();
+      fetchOrders(uPos);
       if (response.ok)
         resolve();
       else
@@ -77,8 +78,7 @@ export default function OrdersPage() {
       error: 'Ошибка при удалении',
     });
 
-    fetchOrders();
-    fetchSalesByGoodsReport();
+    fetchOrders(uPos);
   }
 
   return (
@@ -93,7 +93,7 @@ export default function OrdersPage() {
         </select>
       </div>
       
-      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
+      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate} reLoad={loadingOrders}/>
 
       <div className="mt-2">
         {loadingOrders && (
@@ -134,7 +134,7 @@ export default function OrdersPage() {
           {!order.checked && (
             <button
               type="button"
-              onClick={() => {handleCheckClick(order._id) } }
+              onClick={() => {handleCheckClick(order._id, uPos) } }
               className="p-2">
               <Check className="text-green-500 w-8 h-8"/>
             </button>
@@ -144,7 +144,7 @@ export default function OrdersPage() {
         ))}
       </div>
 
-      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
+      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate} reLoad={loadingOrders}/>
     </section>
   );
 }

@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 
-export default function SalesByGoodsReport({pos, reportDate}) {
+export default function SalesByGoodsReport({pos, reportDate, reLoad}) {
   const [salesByGoodsReport, setSalesByGoodsReport] = useState([]);
 
   useEffect(() => {
     fetchSalesByGoodsReport(pos);
-  }, [pos, reportDate]);
+  }, [pos, reportDate, reLoad]);
 
 
   function fetchSalesByGoodsReport(pos) {
