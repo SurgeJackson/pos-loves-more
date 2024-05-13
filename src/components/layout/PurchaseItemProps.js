@@ -4,7 +4,7 @@ import Plus from "@/components/icons/Plus";
 import Trash from "@/components/icons/Trash";
 import {useState, useEffect} from "react";
 
-export default function MenuItemPriceProps({name, addLabel, props, setProps}) {
+export default function PurchaseItemProps({name, addLabel, props, setProps}) {
   const [isOpen, setIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   
@@ -18,16 +18,16 @@ export default function MenuItemPriceProps({name, addLabel, props, setProps}) {
 
   function addProp() {
     setProps(oldProps => {
-      return [...oldProps, {name:'', price:0}];
+      return [...oldProps, {product:'', quantity:0}];
     });
   }
 
-  function editProp(ev, index, prop) {
-    const newValue = ev.target.value;
-    setProps(prevSizes => {
-      const newSizes = [...prevSizes];
-      newSizes[index][prop] = newValue;
-      return newSizes;
+  function editProp(value, index, prop) {
+    const newValue = value;
+    setProps(prevItems => {
+      const newItems = [...prevItems];
+      newItems[index][prop] = newValue;
+      return newItems;
     });
   }
 
@@ -51,26 +51,23 @@ export default function MenuItemPriceProps({name, addLabel, props, setProps}) {
         <span>({props?.length})</span>
       </button>
       <div className={isOpen ? 'block' : 'hidden'}>
-        {props?.length > 0 && props.map((size,index) => (
+        {props?.length > 0 && props.map((purchaseProduct, index) => (
           <div key={index} className="flex items-end gap-2">
             <div>
               <label>Товар</label>
-              {/* <input type="text"
-                     placeholder="Товар"
-                     value={size.name}
-                     onChange={ev => editProp(ev, index, 'name')}
-              /> */}
-              <select onChange={ev => editProp(ev, index, 'name')}>
+              <select value={purchaseProduct.product._id} onChange={ev => editProp(
+                menuItems.find(c => (c._id == ev.target.value)), index, 'product')}>
+                <option key={1} value={0}></option>
                 {menuItems?.length > 0 && menuItems.map(c => (
                   <option key={c._id} value={c._id}>{c.name} {c.category.name}</option>
               ))}
-        </select>
+              </select>
             </div>
             <div>
               <label>Количество</label>
               <input type="text" placeholder="Количество"
-                     value={size.price}
-                     onChange={ev => editProp(ev, index, 'price')}
+                     value={purchaseProduct.quantity}
+                     onChange={ev => editProp(ev.target.value, index, 'quantity')}
               />
             </div>
             <div>

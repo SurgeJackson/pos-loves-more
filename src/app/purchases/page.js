@@ -8,11 +8,9 @@ import {useProfile} from "@/components/UseProfile";
 import toast from "react-hot-toast";
 
 export default function PurchasesPage() {
-
   const [posName, setPosName] = useState('');
   const [purchases, setPurchases] = useState([]);
   const {loading:profileLoading, data:profileData} = useProfile();
-  const [editedPos, setEditedPos] = useState(null);
 
   useEffect(() => {
     fetchPurchases();
@@ -23,35 +21,6 @@ export default function PurchasesPage() {
       res.json().then(purchases => {
         setPurchases(purchases);
       });
-    });
-  }
-
-  async function handlePosSubmit(ev) {
-    ev.preventDefault();
-    const creationPromise = new Promise(async (resolve, reject) => {
-      const data = {name:posName};
-      if (editedPos) {
-        data._id = editedPos._id;
-      }
-      const response = await fetch('/api/pos', {
-        method: editedPos ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      setPosName('');
-      fetchPoses();
-      setEditedPos(null);
-      if (response.ok)
-        resolve();
-      else
-        reject();
-    });
-    await toast.promise(creationPromise, {
-      loading: editedPos
-                 ? 'Updating POS...'
-                 : 'Creating your new POS...',
-      success: editedPos ? 'POS updated' : 'POS created',
-      error: 'Error, sorry...',
     });
   }
 
@@ -97,25 +66,24 @@ export default function PurchasesPage() {
       </div>
       <div>
         <h2 className="mt-8 text-sm text-gray-500">Список приходов товара</h2>
-        {purchases?.length > 0 && purchases.map(c => (
-          <div
-            key={c._id}
-            className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center">
+        {purchases?.length > 0 && purchases.map(purchase => (
+          <div key={purchase._id} className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center">
+            <div className="text-gray-500 text-xs grow">{new Date(Date.parse(purchase.createdAt)).toLocaleString()}</div>
             <div className="grow">
-              {c.pos}
+              {purchase.pos.name}
+            </div>
+            <div className="grow">
+              {purchase.description}
             </div>
             <div className="flex gap-1">
-              <button type="button"
-                      onClick={() => {
-                        setEditedPos(c);
-                        setPosName(c.name);
-                      }}
-              >
-                Редактировать
-              </button>
+              <Link
+                className="button flex"
+                href={'/purchases/edit/'+purchase._id}>
+                  <span>Редактировать</span>
+              </Link>
               <DeleteButton
                 label="Удалить"
-                onDelete={() => handleDeleteClick(c._id)} />
+                onDelete={() => handleDeleteClick(purchase._id)} />
             </div>
           </div>
         ))}

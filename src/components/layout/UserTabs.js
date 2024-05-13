@@ -5,7 +5,7 @@ import {usePathname} from "next/navigation";
 export default function UserTabs({isAdmin}) {
   const path = usePathname();
   return (
-    <div className="flex mx-auto gap-2 tabs justify-center flex-wrap">
+    <div className="flex mx-auto tabs gap-1 justify-center">
       <Link
         className={path === '/profile' ? 'active' : ''}
         href={'/profile'}

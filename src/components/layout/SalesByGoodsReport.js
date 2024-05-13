@@ -15,7 +15,7 @@ export default function SalesByGoodsReport({pos, reportDate, reLoad}) {
   }
 
   return (
-    <div className="flex flex-col gap-2 bg-gray-100 rounded-lg mb-2 px-4 py-2">
+    <div className="flex flex-col gap-2 bg-gray-100 rounded-lg mb-2 px-4 py-4">
     {salesByGoodsReport.map(rep => (
       <div key={rep._id} className="flex flex-row gap-2 justify-items-center justify-between">
         <div className="w-full">{rep.product}</div>

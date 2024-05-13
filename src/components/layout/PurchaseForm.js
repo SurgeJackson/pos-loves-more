@@ -1,5 +1,3 @@
-import Plus from "@/components/icons/Plus";
-import Trash from "@/components/icons/Trash";
 import PurchaseItemProps from "@/components/layout/PurchaseItemProps";
 import {useEffect, useState} from "react";
 
@@ -19,13 +17,14 @@ export default function PurchaseForm({onSubmit, purchase}) {
 
   return (
     <form onSubmit={ev => onSubmit(ev, {
-          description,pos,purchaseProducts,
+          description, pos, purchaseProducts,
         })
       } className="mt-8 max-w-2xl mx-auto">
       <div className="grid items-start gap-4">
         <div className="grow">
           <label>POS</label>
-          <select value={pos} onChange={ev => setPos(ev.target.value)}>
+          <select value={pos._id} onChange={ev => setPos(poses.find(c => (c._id == ev.target.value)))}>
+            <option key={1} value={0}></option>
             {poses?.length > 0 && poses.map(c => (
               <option key={c._id} value={c._id}>{c.name}</option>
             ))}

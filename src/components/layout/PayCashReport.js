@@ -15,7 +15,6 @@ export default function PayCashReport({pos, reportDate, reLoad}) {
 
   return (
     <div className="flex flex-col bg-gray-100 rounded-lg mb-2 px-4 py-2">
-
       {payCashReport.map((rep, index) => (
         <div key={index} className="flex flex-row gap-2 p-2 justify-between">
           <div className={

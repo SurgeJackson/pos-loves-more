@@ -49,6 +49,10 @@ export async function GET(req) {
       '$unset': [
         '_id'
       ]
+    }, {
+      '$sort': {
+        'payCash': 1
+      }
     }
   ];
   mongoose.connect(process.env.MONGO_URL);
