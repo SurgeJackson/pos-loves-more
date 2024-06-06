@@ -28,8 +28,8 @@ export function cartProductPrice(cartProduct) {
 }
 
 export function AppProvider({children}) {
-  const [cartProducts,setCartProducts] = useState([]);
-  const [pos,setPos] = useState([]);
+  const [cartProducts, setCartProducts] = useState([]);
+  const [pos, setPos] = useState([]);
  
   const ls = typeof window !== 'undefined' ? window.localStorage : null;
 
@@ -85,7 +85,7 @@ export function AppProvider({children}) {
     <SessionProvider>
       <CartContext.Provider value={{
         cartProducts, setCartProducts,
-        addToCart, removeCartProduct, clearCart, pos, setPos, setUserPos,
+        addToCart, removeCartProduct, clearCart, pos, setPos, setUserPos
       }}>
         {children}
       </CartContext.Provider>

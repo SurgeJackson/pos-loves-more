@@ -3,12 +3,10 @@ import MenuItemTile from "@/components/menu/MenuItemTile";
 import Image from "next/image";
 import {useContext, useState} from "react";
 //import FlyingButton from "react-flying-item";
-import toast from "react-hot-toast";
 
 export default function MenuItem(menuItem) {
   const {
-    image,name,description,basePrice,
-    sizes, extraIngredientPrices,
+    image, name, description, basePrice, sizes, extraIngredientPrices
   } = menuItem;
   
   const [
@@ -19,17 +17,18 @@ export default function MenuItem(menuItem) {
   const {addToCart} = useContext(CartContext);
 
   async function handleAddToCartButtonClick() {
-    //console.log('add to cart');
     const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0;
+    
     if (hasOptions && !showPopup) {
       setShowPopup(true);
       return;
     }
     addToCart(menuItem, selectedSize, selectedExtras);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    //console.log('hiding popup');
+    
     setShowPopup(false);
   }
+
   function handleExtraThingClick(ev, extraThing) {
     const checked = ev.target.checked;
     if (checked) {
@@ -45,6 +44,7 @@ export default function MenuItem(menuItem) {
   if (selectedSize) {
     selectedPrice += selectedSize.price;
   }
+
   if (selectedExtras?.length > 0) {
     for (const extra of selectedExtras) {
       selectedPrice += extra.price;
@@ -126,7 +126,7 @@ export default function MenuItem(menuItem) {
       )}
       <MenuItemTile
         onAddToCart={handleAddToCartButtonClick}
-        {...menuItem} />
+        {...menuItem}/>
     </>
   );
 }

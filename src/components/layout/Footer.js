@@ -1,20 +1,11 @@
-'use client';
 import {CartContext} from "@/components/AppContext";
 import {cartProductPrice} from "@/components/AppContext";
-import ShoppingCart from "@/components/icons/ShoppingCart";
-import {signOut, useSession} from "next-auth/react";
-import Link from "next/link";
 import {useContext, useState} from "react";
 import Switch from "@/components/menu/Switch";
 import toast from "react-hot-toast";
 
 export default function Footer() {
-  const session = useSession();
-  const status = session?.status;
-  const userData = session.data?.user;
-  let userName = userData?.name || userData?.email;
   const {cartProducts, removeCartProduct, pos} = useContext(CartContext);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [payCash, setPayCash] = useState(false);
   const [discount, setDiscount] = useState(0);
 

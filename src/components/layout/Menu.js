@@ -1,17 +1,36 @@
-'use client';
-import SectionHeaders from "@/components/layout/SectionHeaders";
-import MenuItem from "@/components/menu/MenuItem";
-import {useEffect, useState} from "react";
-import Footer from "@/components/layout/Footer";
+import {useEffect, useState, useContext} from "react";
+import {CartContext} from "@/components/AppContext";
+import MenuItemTile from "@/components/menu/MenuItemTile";
+import MenuHeader from "@/components/menu/MenuHeader";
+import {useSession} from "next-auth/react";
+
+import QtyButton from "@/components/QtyButton";
+import toast from "react-hot-toast";
 
 export default function Menu() {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const {pos, addToCart} = useContext(CartContext);
+  const [inventory, setInventory] = useState([]);
+
+  const session = useSession();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const {status} = session;
 
   const [open, setOpen] = useState(0);
   const handleTabOpen = (tabCategory) => {
     setOpen(tabCategory);
   };
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetch('/api/profile').then(response => {
+        response.json().then(data => {
+          setIsAdmin(data.admin);
+        })
+      });
+    }
+  }, [session, status]);
 
   useEffect(() => {
     fetch('/api/categories').then(res => {
@@ -21,27 +40,72 @@ export default function Menu() {
       res.json().then(menuItems => setMenuItems(menuItems));
     });
   }, []);
+
+  useEffect(() => {
+    fetchInventory(pos);
+  }, [pos]);
+
+  async function fetchInventory(pos) {
+    fetch('/api/inventory?pos='+pos._id).then(res => {
+      res.json().then(inventory => setInventory(inventory))
+    });
+  }
+
+  async function handleAddToCartButtonClick(menuItem) {    
+    addToCart(menuItem);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  async function handleQtyButtonClick(item, qty) {   
+    const creationPromise = new Promise(async (resolve, reject) => {
+      const data = {
+        pos: pos, 
+        description: "Test", 
+        product: item, 
+        qty: qty
+      };
+
+      const response = await fetch('/api/invTrans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok)
+        resolve();
+      else
+        reject();
+    }); 
+
+    await toast.promise(creationPromise, {
+      loading: 'Изменение остатка...',
+      success: 'Остаток изменен',
+      error: 'Ошибка при изменении остатка',
+    });
+    fetchInventory(pos);
+  }
+
   return (
-    <>
     <section className="flex flex-col gap-4 py-2">
-      <div className="grid grid-cols-4 gap-2 pb-1 sticky top-0 z-50 bg-white shadow-[0_5px_5px_-5px_rgba(0,0,0,0.1)]">
-        {categories?.length > 0 && categories.map((c, index) => (
-          <a key={index} onClick={() => handleTabOpen(index)}
-            className={`cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm ${
-            open === index ? "bg-primary text-white" : "text-body-color hover:bg-primary hover:text-white"}`}>
-              {c.name}
-          </a>
-        ))}
-      </div>
+      <MenuHeader categories={categories} handleTabOpen={handleTabOpen} open={open}/>
       {categories?.length > 0 && categories.map((c, index) => (
         <div key={index} className={`grid grid-cols-5 gap-1 ${open === index ? "block" : "hidden"} `}>
           {menuItems.filter(item => item.category._id === c._id).map(item => (
-            <MenuItem key={item._id} {...item} />
+            <div key={item._id} className="relative">
+              <MenuItemTile
+                onAddToCart={() => handleAddToCartButtonClick(item)}
+                item={item}/>
+              <QtyButton
+                label={inventory.filter(product => product.id === item._id).map(prod => (prod.qty))}
+                onUpdate={handleQtyButtonClick}
+                item = {item}
+                isAdmin = {isAdmin}
+                className={"absolute top-0.5 right-0.5 p-0.5 w-6 h-6 flex items-center justify-center rounded-full text-xs"} 
+              />
+            </div>
          ))}
         </div>
       ))} 
     </section>
-    <Footer />
-    </>
   )
 };
