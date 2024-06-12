@@ -1,6 +1,6 @@
 export default function MenuHeader({categories, handleTabOpen, open}) {
   return (
-    <div className="grid grid-cols-4 gap-2 pb-1 sticky top-0 z-10 bg-white shadow-[0_5px_5px_-5px_rgba(0,0,0,0.1)]">
+    <div className="grid grid-cols-5 gap-2 pb-1 sticky top-0 z-10 bg-white shadow-[0_5px_5px_-5px_rgba(0,0,0,0.1)]">
       {categories?.length > 0 && categories.map((c, index) => (
         <a key={index} onClick={() => handleTabOpen(index)}
           className={`cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm ${

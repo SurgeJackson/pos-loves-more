@@ -46,15 +46,10 @@ export default function MenuItemsPage() {
               href={'/menu-items/edit/'+item._id}
               className="bg-gray-200 rounded-lg p-4"
             >
-              {/* <div className="relative">
-                <Image
-                  className="rounded-md"
-                  src={item.image} alt={''} width={200} height={200} />
-              </div> */}
               <div className="text-center">
                 {item.name}
               </div>
-              <div className="text-xs text-center font-extralight">{item.category.name}</div>
+              <div className="text-xs text-center font-extralight">{item.category?.name}</div>
             </Link>
           ))}
         </div>

@@ -54,10 +54,10 @@ export default function Footer() {
       <div className="flex flex-wrap justify-items-start gap-2">
         {cartProducts?.length > 0 && cartProducts.map((product, index) => (
           <div key={index} className="flex flex-col items-center border p-2 rounded-lg cursor-pointer w-14 shadow" onClick={() => removeCartProduct(index)} >
-            <div className="text-xs font-extralight">
+            <div className="text-xs font-extralight text-center text-clip">
               {product.name}
             </div>
-            <div key={index} className="text-xs font-extralight">
+            <div key={index} className="text-xs font-extralight text-center text-clip">
               {product.category.name}
             </div>
             <div className="text-xs font-extralight">
