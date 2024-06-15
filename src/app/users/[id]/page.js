@@ -35,9 +35,9 @@ export default function EditUserPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Saving user...',
-      success: 'User saved',
-      error: 'An error has occurred while saving the user',
+      loading: 'Сохранение пользователя...',
+      success: 'Пользователь сохранен',
+      error: 'Ошибка',
     });
 
     setRedirectToUsers(true);
