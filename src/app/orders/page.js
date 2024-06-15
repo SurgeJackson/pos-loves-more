@@ -3,6 +3,7 @@ import {CartContext, getCurrentDate} from "@/components/AppContext";
 import {useEffect, useState, useContext} from "react";
 import PayCashReport from "@/components/layout/PayCashReport";
 import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
+import {useSession} from "next-auth/react";
 
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
@@ -15,6 +16,21 @@ export default function OrdersPage() {
   const [poses, setPoses] = useState([]);
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
+  const session = useSession();
+  const [profileFetched, setProfileFetched] = useState(false);
+  const {status} = session;
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetch('/api/profile').then(response => {
+        response.json().then(data => {
+          setIsAdmin(data.admin);
+          setProfileFetched(true);
+        })
+      });
+    }
+  }, [session, status]);
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
@@ -81,6 +97,14 @@ export default function OrdersPage() {
     fetchOrders(uPos);
   }
 
+  if (status === 'loading' || !profileFetched) {
+    return 'Loading...';
+  }
+
+  if (status === 'unauthenticated') {
+    return redirect('/login');
+  }
+
   return (
     <section className="mt-8 max-w-2xl mx-auto w-full">
       <div className="flex flex-col gap-2">
@@ -121,7 +145,7 @@ export default function OrdersPage() {
             </div>
           </div>
           <div className="text-right w-1/4">
-          {!order.checked && (
+          {(!order.checked || isAdmin) && (
             <button
               type="button"
               onClick={() => { 
