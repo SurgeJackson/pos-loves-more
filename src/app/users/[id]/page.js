@@ -2,7 +2,7 @@
 import UserForm from "@/components/layout/UserForm";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
-import {useParams} from "next/navigation";
+import {redirect, useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
 
@@ -10,6 +10,7 @@ export default function EditUserPage() {
   const {loading, data} = useProfile();
   const [user, setUser] = useState(null);
   const {id} = useParams();
+  const [redirectToUsers, setRedirectToUsers] = useState(false);
 
   useEffect(() => {
     fetch('/api/profile?_id='+id).then(res => {
@@ -25,7 +26,7 @@ export default function EditUserPage() {
       const res = await fetch('/api/profile', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...data,_id:id}),
+        body: JSON.stringify({...data, _id:id}),
       });
       if (res.ok)
         resolve();
@@ -38,6 +39,8 @@ export default function EditUserPage() {
       success: 'User saved',
       error: 'An error has occurred while saving the user',
     });
+
+    setRedirectToUsers(true);
   }
 
   if (loading) {
@@ -48,10 +51,14 @@ export default function EditUserPage() {
     return 'Not an admin';
   }
 
+  if (redirectToUsers) {
+    return redirect('/users');
+  }
+
   return (
-    <section className="mt-8 mx-auto max-w-2xl">
+    <section className="flex flex-col gap-4 py-2">
       <UserTabs isAdmin={true} />
-      <div className="mt-8">
+      <div className="mt-2">
         <UserForm user={user} onSave={handleSaveButtonClick} />
       </div>
     </section>

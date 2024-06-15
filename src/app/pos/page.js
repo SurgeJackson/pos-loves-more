@@ -46,9 +46,9 @@ export default function PosPage() {
     });
     await toast.promise(creationPromise, {
       loading: editedPos
-                 ? 'Updating POS...'
-                 : 'Creating your new POS...',
-      success: editedPos ? 'POS updated' : 'POS created',
+                 ? 'Изменение POS...'
+                 : 'Создание новой POS...',
+      success: editedPos ? 'POS изменена' : 'POS создана',
       error: 'Error, sorry...',
     });
   }
@@ -83,9 +83,9 @@ export default function PosPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
+    <section className="flex flex-col gap-4 py-2">
       <UserTabs isAdmin={true} />
-      <form className="mt-8" onSubmit={handlePosSubmit}>
+      <form className="mt-2" onSubmit={handlePosSubmit}>
         <div className="flex gap-2 items-end">
           <div className="grow">
             <label>

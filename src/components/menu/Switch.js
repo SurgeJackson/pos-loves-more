@@ -1,5 +1,5 @@
 export default function Switch({
-  label, className, id, onChange
+  label, className, id, onChange, checked
 }) {
 
   return (
@@ -8,6 +8,7 @@ export default function Switch({
         type="checkbox"
         role="switch"
         id={id}
+        checked={checked}
         onChange={onChange} />
         <label className="inline-block pl-[0.15rem] hover:cursor-pointer"
         htmlFor={id}>

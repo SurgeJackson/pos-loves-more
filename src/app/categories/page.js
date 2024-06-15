@@ -46,9 +46,9 @@ export default function CategoriesPage() {
     });
     await toast.promise(creationPromise, {
       loading: editedCategory
-                 ? 'Updating category...'
-                 : 'Creating your new category...',
-      success: editedCategory ? 'Category updated' : 'Category created',
+                 ? 'Изменение категории...'
+                 : 'Создание новой категории...',
+      success: editedCategory ? 'Категория изменена' : 'Категория создана',
       error: 'Error, sorry...',
     });
   }
@@ -66,9 +66,9 @@ export default function CategoriesPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Deleting...',
-      success: 'Deleted',
-      error: 'Error',
+      loading: 'Удаление...',
+      success: 'Удалена',
+      error: 'Ошибка',
     });
 
     fetchCategories();
@@ -83,9 +83,9 @@ export default function CategoriesPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
+    <section className="flex flex-col gap-4 py-2">
       <UserTabs isAdmin={true} />
-      <form className="mt-8" onSubmit={handleCategorySubmit}>
+      <form className="mt-2" onSubmit={handleCategorySubmit}>
         <div className="flex gap-2 items-end">
           <div className="grow">
             <label>

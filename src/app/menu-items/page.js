@@ -2,7 +2,6 @@
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
-import Image from "next/image";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
@@ -27,9 +26,9 @@ export default function MenuItemsPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
+    <section className="flex flex-col gap-4 py-2">
       <UserTabs isAdmin={true} />
-      <div className="mt-8">
+      <div className="mt-2">
         <Link
           className="button flex"
           href={'/menu-items/new'}>
