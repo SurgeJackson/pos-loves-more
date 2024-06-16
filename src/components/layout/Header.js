@@ -5,10 +5,9 @@ import Profile from "@/components/icons/Profile";
 import Logout from "@/components/icons/Logout";
 import Login from "@/components/icons/Login";
 
-import ShoppingCart from "@/components/icons/ShoppingCart";
 import {signOut, useSession} from "next-auth/react";
 import Link from "next/link";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 
 function AuthLinks({status, userName, pos}) {
   if (status === 'authenticated') {
@@ -18,7 +17,7 @@ function AuthLinks({status, userName, pos}) {
           <Profile /> 
           <div className="flex flex-col items-center">
             <span>{userName}</span>
-            <span>{pos}</span>
+            <span>{pos.name}</span>
           </div>
         </Link>
         <Link href={'/orders'} className="whitespace-nowrap">
@@ -50,8 +49,7 @@ export default function Header() {
   const status = session?.status;
   const userData = session.data?.user;
   let userName = userData?.name || userData?.email;
-  const {cartProducts, pos} = useContext(CartContext);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const {pos} = useContext(CartContext);
   if (userName && userName.includes(' ')) {
     userName = userName.split(' ')[0];
   }
@@ -64,15 +62,7 @@ export default function Header() {
           </Link>
         </nav>
         <nav className="flex items-center gap-4 text-gray-500 font-semibold">
-          <AuthLinks status={status} userName={userName} pos={pos.name}/>
-          {/* <Link href={'/cart'} className="relative">
-            <ShoppingCart />
-            {cartProducts?.length > 0 && (
-              <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
-            {cartProducts.length}
-          </span>
-            )}
-          </Link> */}
+          <AuthLinks status={status} userName={userName} pos={pos}/>
         </nav>
       </div>
     </header>
