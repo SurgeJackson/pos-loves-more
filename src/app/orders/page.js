@@ -1,9 +1,9 @@
 'use client';
-import {CartContext, getCurrentDate} from "@/components/AppContext";
 import {useEffect, useState, useContext} from "react";
+import {useProfile} from "@/components/UseProfile";
+import {CartContext, getCurrentDate} from "@/components/AppContext";
 import PayCashReport from "@/components/layout/PayCashReport";
 import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
-import {useSession} from "next-auth/react";
 
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
@@ -16,21 +16,7 @@ export default function OrdersPage() {
   const [poses, setPoses] = useState([]);
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
-  const session = useSession();
-  const [profileFetched, setProfileFetched] = useState(false);
-  const {status} = session;
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      fetch('/api/profile').then(response => {
-        response.json().then(data => {
-          setIsAdmin(data.admin);
-          setProfileFetched(true);
-        })
-      });
-    }
-  }, [session, status]);
+  const {data:user, loading:profileFetched} = useProfile();
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
@@ -97,12 +83,8 @@ export default function OrdersPage() {
     fetchOrders(uPos);
   }
 
-  if (status === 'loading' || !profileFetched) {
+  if (profileFetched) {
     return 'Loading...';
-  }
-
-  if (status === 'unauthenticated') {
-    return redirect('/login');
   }
 
   return (
@@ -145,7 +127,7 @@ export default function OrdersPage() {
             </div>
           </div>
           <div className="text-right w-1/4">
-          {(!order.checked || isAdmin) && (
+          {(!order.checked || user.admin) && (
             <button
               type="button"
               onClick={() => { 

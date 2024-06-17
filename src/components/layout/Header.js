@@ -1,13 +1,12 @@
 'use client';
+import {useContext} from "react";
+import {signOut, useSession} from "next-auth/react";
+import Link from "next/link";
 import {CartContext} from "@/components/AppContext";
 import Orders from "@/components/icons/Orders";
 import Profile from "@/components/icons/Profile";
 import Logout from "@/components/icons/Logout";
 import Login from "@/components/icons/Login";
-
-import {signOut, useSession} from "next-auth/react";
-import Link from "next/link";
-import {useContext} from "react";
 
 function AuthLinks({status, userName, pos}) {
   if (status === 'authenticated') {
@@ -36,9 +35,6 @@ function AuthLinks({status, userName, pos}) {
       <>
         <Link href={'/login'} className="bg-primary rounded-full text-white px-8 py-2">
         <Login /></Link>
-        {/* <Link href={'/register'} className="bg-primary rounded-full text-white px-8 py-2">
-          Register
-        </Link> */}
       </>
     );
   }

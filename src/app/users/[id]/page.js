@@ -59,7 +59,7 @@ export default function EditUserPage() {
     <section className="flex flex-col gap-4 py-2">
       <UserTabs isAdmin={true} />
       <div className="mt-2">
-        <UserForm user={user} onSave={handleSaveButtonClick} />
+        <UserForm user={user} onSave={handleSaveButtonClick} isAdmin={data.admin}/>
       </div>
     </section>
   );

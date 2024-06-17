@@ -2,35 +2,19 @@ import {useEffect, useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
 import MenuItemTile from "@/components/menu/MenuItemTile";
 import MenuHeader from "@/components/menu/MenuHeader";
-import {useSession} from "next-auth/react";
-
 import QtyButton from "@/components/QtyButton";
 import toast from "react-hot-toast";
 
-export default function Menu() {
+export default function Menu({isAdmin}) {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const {pos, addToCart} = useContext(CartContext);
   const [inventory, setInventory] = useState([]);
 
-  const session = useSession();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const {status} = session;
-
   const [open, setOpen] = useState(0);
   const handleTabOpen = (tabCategory) => {
     setOpen(tabCategory);
   };
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      fetch('/api/profile').then(response => {
-        response.json().then(data => {
-          setIsAdmin(data.admin);
-        })
-      });
-    }
-  }, [session, status]);
 
   useEffect(() => {
     fetch('/api/categories').then(res => {

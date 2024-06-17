@@ -1,6 +1,3 @@
-import Plus from "@/components/icons/Plus";
-import Trash from "@/components/icons/Trash";
-import EditableImage from "@/components/layout/EditableImage";
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
 import {useEffect, useState} from "react";
 
@@ -56,14 +53,14 @@ export default function MenuItemForm({onSubmit,menuItem}) {
             value={basePrice}
             onChange={ev => setBasePrice(ev.target.value)}
           />
-          <MenuItemPriceProps name={'Размеры'}
+          {/* <MenuItemPriceProps name={'Размеры'}
                               addLabel={'Add item size'}
                               props={sizes}
                               setProps={setSizes} />
           <MenuItemPriceProps name={'Дополнительные опции'}
                               addLabel={'Add ingredients prices'}
                               props={extraIngredientPrices}
-                              setProps={setExtraIngredientPrices}/>
+                              setProps={setExtraIngredientPrices}/> */}
           <button type="submit">Сохранить</button>
         </div>
       </div>

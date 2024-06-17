@@ -7,29 +7,26 @@ import toast from "react-hot-toast";
 export default function Footer() {
   const {cartProducts, removeCartProduct, pos} = useContext(CartContext);
   const [payCash, setPayCash] = useState(false);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState();
 
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
   }
-  subtotal -= discount;
+  subtotal -= discount ? discount : 0;
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
-    // address and shopping cart products
-
     if (cartProducts?.length > 0) {
       const promise = new Promise((resolve, reject) => {
         fetch('/api/checkout', {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({
-            //address,
             cartProducts,
             payCash,
             pos,
-            discount
+            discount,
           }),
         }).then(async (response) => {
           if (response.ok) {
