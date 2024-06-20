@@ -73,11 +73,11 @@ export default function ProfilePage() {
 
   return (
     <section className="flex flex-col gap-4 py-2">
-      <UserTabs isAdmin={user.admin} />
+      <UserTabs isAdmin={user?.admin} />
       <div className="mt-2">
-        <UserForm user={user} onSave={handleProfileInfoUpdate} isAdmin={user.admin}/>
+        <UserForm user={user} onSave={handleProfileInfoUpdate} isAdmin={user?.admin}/>
       </div>
-      {user.admin && 
+      {user?.admin && 
       <PosSelector pos={pos} poses={poses} onClick={handlePosSelectorClick}/>}
     </section>
   );

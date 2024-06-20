@@ -18,7 +18,7 @@ export async function POST(req) {
 
   let dist_discount = orderDiscount;
   for (const p of cartProducts) {
-    let price_discount = Math.ceil(discount * (p.basePrice/subtotal));
+    let price_discount = Math.ceil(orderDiscount * (p.basePrice/subtotal));
     p.discount = price_discount > dist_discount ? dist_discount : price_discount;
     dist_discount -= p.discount;
   }

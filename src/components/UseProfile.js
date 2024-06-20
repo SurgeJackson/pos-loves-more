@@ -1,17 +1,7 @@
-import {useEffect, useState} from "react";
+import useSWR from 'swr';
 
 export function useProfile() {
-  const [data, setData] = useState(false);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(true);
-    fetch('/api/profile').then(response => {
-      response.json().then(data => {
-        setData(data);
-        setLoading(false);
-      });
-    })
-  }, []);
-
-  return {loading, data};
+  const fetcher = (...args) => fetch(...args).then(res => res.json());
+  const { data, error, loading } = useSWR('/api/profile', fetcher);
+  return { loading, data, error };
 }

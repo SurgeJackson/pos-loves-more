@@ -4,6 +4,7 @@ import CartProduct from "@/components/menu/CartProduct";
 import {useParams} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import {dbTimeForHuman} from "@/libs/datetime";
+import QRCode from "@/components/QRCode";
 
 export default function OrderPage() {
   const {clearCart} = useContext(CartContext);
@@ -35,7 +36,7 @@ export default function OrderPage() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto mt-8">
+    <section className="mt-8">
       <div className="text-center">
         <h2 className="text-primary font-bold text-4xl italic">
           Заказ
@@ -49,29 +50,31 @@ export default function OrderPage() {
       )}
       {order && (
         <div className="grid w-full">
-         {order.cartProducts.map((product, index) => (
-              <CartProduct key={index} product={product} />
-            ))}
-            <div className="text-right py-2 text-gray-500">
-              Итого:
-              <span className="text-black font-bold inline-block w-8">
-                {subtotal.toLocaleString()}&#8381;
-              </span>
-            </div>
-            <div className="text-right py-2 text-gray-500">
-              Скидка:
-              <span className="text-black font-bold inline-block w-8">
-                {order.discount?.toLocaleString()}&#8381;
-              </span>
-            </div>
-            <div className="text-right py-2 text-gray-500">
-              Итого со скидкой:
-              <span className="text-black font-bold inline-block w-8">
-                {(subtotal - order.discount).toLocaleString()}&#8381;
-              </span>
-            </div>
+          {order.cartProducts.map((product, index) => (
+            <CartProduct key={index} product={product} />
+            ))
+          }
+          <div className="text-right py-2 text-gray-500">
+            Итого:
+            <span className="text-black font-bold inline-block w-8">
+              {subtotal.toLocaleString()}&#8381;
+            </span>
+          </div>
+          <div className="text-right py-2 text-gray-500">
+            Скидка:
+            <span className="text-black font-bold inline-block w-8">
+              {order.discount?.toLocaleString()}&#8381;
+            </span>
+          </div>
+          <div className="text-right py-2 text-gray-500">
+            Итого со скидкой:
+            <span className="text-black font-bold inline-block w-8">
+              {(subtotal - order?.discount).toLocaleString()}&#8381;
+            </span>
+          </div>
         </div>
       )}
+      <QRCode sum={subtotal - order?.discount} />
     </section>
   );
 }

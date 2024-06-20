@@ -2,14 +2,12 @@
 import DeleteButton from "@/components/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
 import {useEffect, useState} from "react";
-import {useProfile} from "@/components/UseProfile";
 import toast from "react-hot-toast";
 
 export default function PosPage() {
-
   const [posName, setPosName] = useState('');
   const [poses, setPoses] = useState([]);
-  const {loading:profileLoading, data:profileData} = useProfile();
+  const [profileLoading, setProfileLoading] = useState(true);
   const [editedPos, setEditedPos] = useState(null);
 
   useEffect(() => {
@@ -19,7 +17,9 @@ export default function PosPage() {
   function fetchPoses() {
     fetch('/api/pos').then(res => {
       res.json().then(poses => {
+        setProfileLoading(true);
         setPoses(poses);
+        setProfileLoading(false);
       });
     });
   }
@@ -75,11 +75,7 @@ export default function PosPage() {
   }
 
   if (profileLoading) {
-    return 'Loading user info...';
-  }
-
-  if (!profileData.admin) {
-    return 'Not an admin';
+    return 'Загрузка списка POS...';
   }
 
   return (

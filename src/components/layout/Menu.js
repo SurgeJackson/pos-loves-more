@@ -4,12 +4,14 @@ import MenuItemTile from "@/components/menu/MenuItemTile";
 import MenuHeader from "@/components/menu/MenuHeader";
 import QtyButton from "@/components/QtyButton";
 import toast from "react-hot-toast";
+import {useProfile} from "@/components/UseProfile";
 
-export default function Menu({isAdmin}) {
+export default function Menu() {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const {pos, addToCart} = useContext(CartContext);
   const [inventory, setInventory] = useState([]);
+  const {data:user} = useProfile();
 
   const [open, setOpen] = useState(0);
   const handleTabOpen = (tabCategory) => {
@@ -83,7 +85,7 @@ export default function Menu({isAdmin}) {
                 label={inventory.filter(product => product.id === item._id).map(prod => (prod.qty))}
                 onUpdate={handleQtyButtonClick}
                 item = {item}
-                isAdmin = {isAdmin}
+                isAdmin = {user?.admin}
                 className={"absolute top-0.5 right-0.5 p-0.5 w-6 h-6 flex items-center justify-center rounded-full text-xs"} 
               />
             </div>
