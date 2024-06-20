@@ -36,7 +36,7 @@ export default function OrderPage() {
   }
 
   return (
-    <section className="mt-8">
+    <section className="mt-8 px-4">
       <div className="text-center">
         <h2 className="text-primary font-bold text-4xl italic">
           Заказ
@@ -49,32 +49,48 @@ export default function OrderPage() {
         <div>Загрузка заказа...</div>
       )}
       {order && (
-        <div className="grid w-full">
+        <div className="flex flex-col w-full">
           {order.cartProducts.map((product, index) => (
             <CartProduct key={index} product={product} />
             ))
           }
-          <div className="text-right py-2 text-gray-500">
-            Итого:
-            <span className="text-black font-bold inline-block w-8">
+          <div className="flex items-center gap-2 py-1">
+            <div className="grow">
+              <h3 className="font-semibold">
+                Итого:
+              </h3>
+            </div>
+            <div className="text-black font-bold">
               {subtotal.toLocaleString()}&#8381;
-            </span>
+            </div>
           </div>
-          <div className="text-right py-2 text-gray-500">
-            Скидка:
-            <span className="text-black font-bold inline-block w-8">
+
+          <div className="flex items-center gap-2 py-1">
+            <div className="grow">
+              <h3 className="font-semibold">
+                Скидка:
+              </h3>
+            </div>
+            <div className="text-black font-bold">
               {order.discount?.toLocaleString()}&#8381;
-            </span>
+            </div>
           </div>
-          <div className="text-right py-2 text-gray-500">
-            Итого со скидкой:
-            <span className="text-black font-bold inline-block w-8">
+
+          <div className="flex items-center gap-2 border-b py-1">
+            <div className="grow">
+              <h3 className="font-semibold">
+                Итого со скидкой:
+              </h3>
+            </div>
+            <div className="text-black font-bold">
               {(subtotal - order?.discount).toLocaleString()}&#8381;
-            </span>
+            </div>
           </div>
         </div>
       )}
-      <QRCode sum={subtotal - order?.discount} />
+      <div className="mt-4">
+        <QRCode sum={subtotal - order?.discount} />
+      </div>
     </section>
   );
 }

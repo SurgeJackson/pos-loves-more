@@ -3,9 +3,8 @@ import {UserInfo} from "../../../../models/UserInfo";
 import bcrypt from "bcrypt";
 import * as mongoose from "mongoose";
 import {User} from '../../../../models/User';
-import NextAuth, {getServerSession} from "next-auth";
+import {getServerSession} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 
 export const authOptions = {
@@ -19,10 +18,6 @@ export const authOptions = {
     error: '/login'
   },
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // }),
     CredentialsProvider({
       name: 'Credentials',
       id: 'credentials',
@@ -60,7 +55,3 @@ export async function isAdmin() {
   }
   return userInfo.admin;
 }
-
-//const handler = NextAuth(authOptions);
-
-//export { handler as GET, handler as POST }
