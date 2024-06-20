@@ -88,7 +88,7 @@ export default function OrderPage() {
           </div>
         </div>
       )}
-      <div className="mt-4">
+      <div className="mt-4 mx-auto">
         <QRCode sum={subtotal - order?.discount} />
       </div>
     </section>
