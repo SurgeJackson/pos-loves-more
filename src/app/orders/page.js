@@ -7,6 +7,8 @@ import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
 
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
+import View from "@/components/icons/View";
+import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
 
 export default function OrdersPage() {
@@ -17,6 +19,7 @@ export default function OrdersPage() {
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
   const {data:user, loading:profileFetched} = useProfile();
+  const router = useRouter();
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
@@ -83,6 +86,10 @@ export default function OrdersPage() {
     fetchOrders(uPos);
   }
 
+  function handleViewClick(_id) {
+    router.push('/orders/' + _id);
+  }
+
   if (profileFetched) {
     return 'Loading...';
   }
@@ -126,14 +133,14 @@ export default function OrdersPage() {
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
           </div>
-          <div className="text-right w-1/4">
+          <div className="text-right w-1/4 flex">
           {(!order.checked || user.admin) && (
             <button
               type="button"
               onClick={() => { 
                 if (window.confirm('Удалить заказ?')) handleDeleteClick(order._id)
               } }
-              className="p-2">
+              className="p-2 w-10 h-10">
               <Trash />
             </button>
           )}
@@ -141,10 +148,16 @@ export default function OrdersPage() {
             <button
               type="button"
               onClick={() => {handleCheckClick(order._id, uPos) } }
-              className="p-2">
-              <Check className="text-green-500 w-8 h-8"/>
+              className="p-2 w-10 h-10">
+              <Check className="text-green-500 w-6 h-6"/>
             </button>
           )}
+            <button
+              type="button"
+              onClick={() => { handleViewClick(order._id) } }
+              className="p-2 w-10 h-10">
+              <View />
+            </button>
           </div>
         </div>
         ))}
