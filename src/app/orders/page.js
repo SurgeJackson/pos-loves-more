@@ -130,7 +130,7 @@ export default function OrdersPage() {
             {(order.cartProducts.reduce(function(tot, arr) {return tot + arr.basePrice},0) - order.discount).toLocaleString()}&#8381;    
             <div className={
               (order.payCash ? 'bg-green-500' : 'bg-red-400')
-              + ' p-1 rounded-md text-white w-24 text-center text-sm w-full'}>
+              + ' p-1 rounded-md text-white text-center text-sm w-full'}>
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
           </div>
