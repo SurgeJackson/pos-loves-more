@@ -36,7 +36,7 @@ export default function OrderPage() {
   }
 
   return (
-    <section className="mt-8 px-4">
+    <section className="mt-2 px-4">
       <div className="text-center">
         <h2 className="text-primary font-bold text-4xl italic">
           Заказ
@@ -55,10 +55,8 @@ export default function OrderPage() {
             ))
           }
           <div className="flex items-center gap-2 py-1">
-            <div className="grow">
-              <h3 className="font-semibold">
+            <div className="grow font-semibold">
                 Итого:
-              </h3>
             </div>
             <div className="text-black font-bold">
               {subtotal.toLocaleString()}&#8381;
@@ -66,10 +64,8 @@ export default function OrderPage() {
           </div>
 
           <div className="flex items-center gap-2 py-1">
-            <div className="grow">
-              <h3 className="font-semibold">
+            <div className="grow font-semibold">
                 Скидка:
-              </h3>
             </div>
             <div className="text-black font-bold">
               {order.discount?.toLocaleString()}&#8381;
@@ -77,10 +73,8 @@ export default function OrderPage() {
           </div>
 
           <div className="flex items-center gap-2 border-b py-1">
-            <div className="grow">
-              <h3 className="font-semibold">
+            <div className="grow font-semibold">
                 Итого со скидкой:
-              </h3>
             </div>
             <div className="text-black font-bold">
               {(subtotal - order?.discount).toLocaleString()}&#8381;

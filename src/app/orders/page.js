@@ -108,32 +108,39 @@ export default function OrdersPage() {
       
       <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate} reLoad={loadingOrders}/>
 
-      <div className="mt-2">
+      <div className="mt-2 flex flex-col">
         {loadingOrders && (
           <div>Загрузка заказов...</div>
         )}
         {orders?.length > 0 && orders.map(order => (
-        <div key={order._id} className="bg-gray-100 mb-2 px-4 py-2 rounded-lg flex flex-row justify-around items-start gap-2">
-          <div className="flex flex-col gap-1 items-start mb-1 w-1/4">
-            <div className="text-xs truncate w-full">{order.userEmail}
-            </div>
+        <div key={order._id} className="bg-gray-100 mb-2 p-2 rounded-lg grid grid-cols-4  items-center justify-center gap-2">
+          <div className="flex flex-col gap-1 items-start mb-1">
+            <div className="text-xs truncate w-full">{order.userEmail}</div>
             <div className="text-xs">{order.pos.name}</div>
             <div className="text-gray-500 text-xs">{new Date(Date.parse(order.createdAt)).toLocaleString()}</div>
           </div>
-          <div className="text-gray-500 text-xs text-center w-1/2">
-          {order.cartProducts.map((product) => (
-              product.name + '(' + product.category.name + ') '
-          ))}
+          <div className="text-gray-500 text-xs text-center w-full text-wrap">
+            {order.cartProducts.map((product) => (
+              <p className="truncate">
+                {product.name + '(' + product.category.name + ') '}
+              </p>
+            ))}
           </div>
-          <div className="text-center w-1/4">
+          <div className="text-center w-full">
             {(order.cartProducts.reduce(function(tot, arr) {return tot + arr.basePrice},0) - order.discount).toLocaleString()}&#8381;    
             <div className={
               (order.payCash ? 'bg-green-500' : 'bg-red-400')
-              + ' p-1 rounded-md text-white w-24 text-center text-sm'}>
+              + ' p-1 rounded-md text-white w-24 text-center text-sm w-full'}>
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
           </div>
-          <div className="text-right w-1/4 flex">
+          <div className="text-right flex flex-wrap justify-center gap-1 w-full">
+            <button
+              type="button"
+              onClick={() => { handleViewClick(order._id) } }
+              className="p-2 w-10 h-10">
+              <View className="w-5 h-5"/>
+            </button>
           {(!order.checked || user.admin) && (
             <button
               type="button"
@@ -141,7 +148,7 @@ export default function OrdersPage() {
                 if (window.confirm('Удалить заказ?')) handleDeleteClick(order._id)
               } }
               className="p-2 w-10 h-10">
-              <Trash />
+              <Trash className="w-5 h-5"/>
             </button>
           )}
           {!order.checked && (
@@ -149,15 +156,9 @@ export default function OrdersPage() {
               type="button"
               onClick={() => {handleCheckClick(order._id, uPos) } }
               className="p-2 w-10 h-10">
-              <Check className="text-green-500 w-6 h-6"/>
+              <Check className="text-green-500 w-5 h-5"/>
             </button>
           )}
-            <button
-              type="button"
-              onClick={() => { handleViewClick(order._id) } }
-              className="p-2 w-10 h-10">
-              <View />
-            </button>
           </div>
         </div>
         ))}
