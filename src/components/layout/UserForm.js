@@ -2,8 +2,8 @@ import {useState} from "react";
 import Switch from "@/components/menu/Switch";
 
 export default function UserForm({user, onSave, isAdmin}) {
-  const [userName, setUserName] = useState(user?.name || '');
-  const [admin, setAdmin] = useState(user?.admin || false);
+  const [userName, setUserName] = useState(user?.name);
+  const [admin, setAdmin] = useState(user?.admin);
 
   return (
     <div className="md:flex gap-4">

@@ -16,7 +16,7 @@ export default function ProfilePage() {
   const {status} = session;
   const [redirectToMain, setRedirectToMain] = useState(false);
   const {pos, setUserPos, setPos} = useContext(CartContext);
-  const {data:user, loading:profileFetched} = useProfile();
+  const {data:user, isLoading:profileFetched} = useProfile();
   const {data:poses} = usePoses();
 
   async function handleProfileInfoUpdate(ev, data) {

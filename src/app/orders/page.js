@@ -19,7 +19,7 @@ export default function OrdersPage() {
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
-  const {data:user, loading:profileFetched} = useProfile();
+  const {data:user, isLoading:profileFetched} = useProfile();
   const {data:poses} = usePoses();
 
   const router = useRouter();

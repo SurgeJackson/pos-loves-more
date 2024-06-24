@@ -3,22 +3,14 @@ import UserForm from "@/components/layout/UserForm";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
 import {redirect, useParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import toast from "react-hot-toast";
 
 export default function EditUserPage() {
-  const {loading, data} = useProfile();
-  const [user, setUser] = useState(null);
+  const {data, isLoading:loading} = useProfile();
   const {id} = useParams();
   const [redirectToUsers, setRedirectToUsers] = useState(false);
-
-  useEffect(() => {
-    fetch('/api/profile?_id='+id).then(res => {
-      res.json().then(user => {
-        setUser(user);
-      });
-    })
-  }, []);
+  const {data:user, isLoading} = useProfile(id);
 
   async function handleSaveButtonClick(ev, data) {
     ev.preventDefault();
@@ -43,7 +35,7 @@ export default function EditUserPage() {
     setRedirectToUsers(true);
   }
 
-  if (loading) {
+  if (loading || isLoading) {
     return 'Loading user profile...';
   }
 

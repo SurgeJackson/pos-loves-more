@@ -4,24 +4,17 @@ import Left from "@/components/icons/Left";
 import MenuItemForm from "@/components/layout/MenuItemForm";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
+import {useMenuItems} from "@/components/UseMenuItems";
 import Link from "next/link";
 import {redirect, useParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import toast from "react-hot-toast";
 
 export default function EditMenuItemPage() {
-
   const {id} = useParams();
-
-  const [menuItem, setMenuItem] = useState(null);
   const [redirectToItems, setRedirectToItems] = useState(false);
-  const {loading, data} = useProfile();
-
-  useEffect(() => {
-    fetch('/api/menu-items?_id='+id).then(res => {
-      res.json().then(item => setMenuItem(item))
-    });
-  }, []);
+  const {data, isloading:loading} = useProfile();
+  const {data:menuItem, isLoading} = useMenuItems(id);
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
@@ -71,8 +64,8 @@ export default function EditMenuItemPage() {
     return redirect('/menu-items');
   }
 
-  if (loading) {
-    return 'Loading user info...';
+  if (loading || isLoading) {
+    return 'Loading ...';
   }
 
   if (!data?.admin) {
