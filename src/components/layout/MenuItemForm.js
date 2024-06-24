@@ -1,30 +1,21 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
+import {useCategories} from "@/components/UseCategories";
 
 export default function MenuItemForm({onSubmit,menuItem}) {
-  const [image, setImage] = useState(menuItem?.image || '');
   const [name, setName] = useState(menuItem?.name || '');
   const [description, setDescription] = useState(menuItem?.description || '');
   const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
-  const [sizes, setSizes] = useState(menuItem?.sizes || []);
   const [category, setCategory] = useState(menuItem?.category || '');
-  const [categories, setCategories] = useState([]);
-  const [
-    extraIngredientPrices,
-    setExtraIngredientPrices,
-  ] = useState(menuItem?.extraIngredientPrices || []);
-
-  useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => {
-        setCategories(categories);
-      });
-    });
-  }, []);
+  const {data:categories, isLoading:profileLoading} = useCategories();
+  
+  if (profileLoading) {
+    return 'Загрузка категорий...';
+  }
 
   return (
     <form onSubmit={ev =>
         onSubmit(ev, {
-          image,name,description,basePrice,sizes,extraIngredientPrices,category,
+          name,description,basePrice,category,
         })} className="mt-2">
       <div className="grid items-start gap-4">
         <div className="grow">

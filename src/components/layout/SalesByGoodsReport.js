@@ -1,8 +1,4 @@
-import {useSalesByGoodsReport} from "@/components/UseSalesByGoodsReport";
-
-export default function SalesByGoodsReport({pos, reportDate}) {
-  const {data} = useSalesByGoodsReport(reportDate, pos);
-
+export default function SalesByGoodsReport({data}) {
   return (
     <div className="flex flex-col gap-2 bg-gray-100 rounded-lg mb-2 px-4 py-4">
     {data?.map(rep => (

@@ -38,20 +38,8 @@ export default function UserTabs({isAdmin}) {
           >
             POS
           </Link>
-          {/* <Link
-            className={path.includes('/purchases') ? 'active' : ''}
-            href={'/purchases'}
-          >
-            Приход товара
-          </Link> */}
         </>
       )}
-      {/* <Link
-        className={path === '/orders' ? 'active' : ''}
-        href={'/orders'}
-      >
-        Заказы
-      </Link> */}
     </div>
   );
 }

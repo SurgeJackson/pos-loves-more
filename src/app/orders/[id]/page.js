@@ -1,31 +1,21 @@
 'use client';
 import {CartContext, cartProductPrice} from "@/components/AppContext";
 import CartProduct from "@/components/menu/CartProduct";
-import {useParams} from "next/navigation";
-import {useContext, useEffect, useState} from "react";
+import {useParams, useSearchParams} from "next/navigation";
+import {useContext, useEffect} from "react";
 import {dbTimeForHuman} from "@/libs/datetime";
 import QRCode from "@/components/QRCode";
+import useSWR from 'swr';
 
 export default function OrderPage() {
   const {clearCart} = useContext(CartContext);
-  const [order, setOrder] = useState();
-  const [loadingOrder, setLoadingOrder] = useState(true);
   const {id} = useParams();
+  const searchParams = useSearchParams();
+  const clear = searchParams.get('clear-cart');
+  const {data:order, isLoading:loadingOrder} = useSWR('/api/orders?_id='+id);
+
   useEffect(() => {
-    if (typeof window.console !== "undefined") {
-      if (window.location.href.includes('clear-cart=1')) {
-        clearCart();
-      }
-    }
-    if (id) {
-      setLoadingOrder(true);
-      fetch('/api/orders?_id='+id).then(res => {
-        res.json().then(orderData => {
-          setOrder(orderData);
-          setLoadingOrder(false);
-        });
-      })
-    }
+    if (clear) clearCart();
   }, []);
 
   let subtotal = 0;

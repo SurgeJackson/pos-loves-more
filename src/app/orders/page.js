@@ -1,44 +1,37 @@
 'use client';
-import {useEffect, useState, useContext} from "react";
+import {useState, useContext} from "react";
+import {useRouter} from 'next/navigation';
+import {CartContext, getCurrentDate} from "@/components/AppContext";
 import {useProfile} from "@/components/UseProfile";
 import {usePoses} from "@/components/UsePoses";
+import {useOrders} from "@/components/UseOrders";
+import {usePayCashReport} from "@/components/UsePayCashReport";
+import {useSalesByGoodsReport} from "@/components/UseSalesByGoodsReport";
 
-import {CartContext, getCurrentDate} from "@/components/AppContext";
 import PayCashReport from "@/components/layout/PayCashReport";
 import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
-
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
 import View from "@/components/icons/View";
-import {useRouter} from 'next/navigation';
 import toast from "react-hot-toast";
 
 export default function OrdersPage() {
   const {pos} = useContext(CartContext);
-  const [orders, setOrders] = useState([]);
-  const [loadingOrders, setLoadingOrders] = useState(true);
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
   const {data:user, isLoading:profileFetched} = useProfile();
   const {data:poses} = usePoses();
+  const {data:orders, 
+          isLoading:loadingOrders, 
+            mutate} = useOrders(reportDate, uPos ? uPos : pos._id);
+  const {data:payCashReportData, 
+          isLoading:loadingPayCashReport, 
+            mutate:mutatePayCashReport} = usePayCashReport(reportDate, uPos ? uPos : pos._id);
+  const {data:salesByGoodsReportData, 
+          isLoading:loadingSalesByGoodsReport, 
+            mutate:mutateSalesByGoodsReport} = useSalesByGoodsReport(reportDate, uPos ? uPos : pos._id);
 
   const router = useRouter();
-
-  useEffect(() => {
-    const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
-    setUPos(ps);
-    fetchOrders(ps);
-  }, [reportDate, uPos]);
-
-  function fetchOrders(pos) {
-    setLoadingOrders(true);
-    fetch('/api/orders?date='+reportDate+'&pos='+pos).then(res => {
-      res.json().then(orders => {
-        setOrders(orders.reverse());
-        setLoadingOrders(false);
-      })
-    })
-  }
 
   async function handleCheckClick(_id, uPos) {
     const creationPromise = new Promise(async (resolve, reject) => {
@@ -51,11 +44,13 @@ export default function OrdersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      fetchOrders(uPos);
-      if (response.ok)
+      if (response.ok) {
+        mutate();
         resolve();
-      else
+      }
+      else {
         reject();
+      }
     });
   }
 
@@ -65,6 +60,9 @@ export default function OrdersPage() {
         method: 'DELETE',
       });
       if (response.ok) {
+        mutate();
+        mutatePayCashReport();
+        mutateSalesByGoodsReport();
         resolve();
       } else {
         reject();
@@ -76,15 +74,13 @@ export default function OrdersPage() {
       success: 'Заказ удален',
       error: 'Ошибка при удалении',
     });
-
-    fetchOrders(uPos);
   }
 
   function handleViewClick(_id) {
     router.push('/orders/' + _id);
   }
 
-  if (profileFetched) {
+  if (profileFetched || loadingOrders || loadingPayCashReport) {
     return 'Loading...';
   }
 
@@ -100,13 +96,13 @@ export default function OrdersPage() {
         </select>
       </div>
       
-      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
+      <PayCashReport data={payCashReportData}/>
 
       <div className="mt-2 flex flex-col">
         {loadingOrders && (
           <div>Загрузка заказов...</div>
         )}
-        {orders?.length > 0 && orders.map(order => (
+        {orders?.length > 0 && [...orders].reverse().map(order => (
         <div key={order._id} className="bg-gray-100 mb-2 p-2 rounded-lg grid grid-cols-4  items-center justify-center gap-2">
           <div className="flex flex-col gap-1 items-start mb-1">
             <div className="text-xs truncate w-full">{order.userEmail}</div>
@@ -158,7 +154,7 @@ export default function OrdersPage() {
         ))}
       </div>
 
-      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
+      <SalesByGoodsReport data={salesByGoodsReportData}/>
     </section>
   );
 }
