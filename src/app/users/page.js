@@ -1,11 +1,10 @@
 'use client';
-import useSWR from 'swr';
+import {useUsers} from "@/components/UseUsers";
 import UserTabs from "@/components/layout/UserTabs";
 import Link from "next/link";
 
 export default function UsersPage() {
-  const fetcher = (...args) => fetch(...args).then(res => res.json());
-  const { data, isLoading } = useSWR('/api/users', fetcher);
+  const {data, isLoading} = useUsers();
 
   if (isLoading) {
     return 'Загрузка списка пользователей...';

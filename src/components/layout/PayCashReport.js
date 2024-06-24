@@ -1,21 +1,11 @@
-import {useEffect, useState} from "react";
+import {usePayCashReport} from "@/components/UsePayCashReport";
 
-export default function PayCashReport({pos, reportDate, reLoad}) {
-  const [payCashReport, setPayCashReport] = useState([]);
-
-  useEffect(() => {
-    fetchPayCashReport(pos);
-  }, [pos, reportDate, reLoad]);
-
-  function fetchPayCashReport(pos) {
-    fetch('/api/payCashReport?date='+reportDate+'&pos='+pos).then(res => {
-      res.json().then(payCashReport => setPayCashReport(payCashReport))
-    });
-  }
+export default function PayCashReport({pos, reportDate}) {
+  const {data} = usePayCashReport(reportDate, pos);
 
   return (
     <div className="flex flex-col bg-gray-100 rounded-lg mb-2 px-4 py-2">
-      {payCashReport.map((rep, index) => (
+      {data?.map((rep, index) => (
         <div key={index} className="flex flex-row gap-2 p-2 justify-between">
           <div className={
             (rep.payCash ? 'bg-green-500' : 'bg-red-400')
@@ -33,7 +23,7 @@ export default function PayCashReport({pos, reportDate, reLoad}) {
           Итого
         </div>
         <div className="text-center font-bold">
-          {(payCashReport.reduce((tot, val) => tot + val.total_value - val.total_discount, 0 )).toLocaleString()}&#8381;
+          {(data?.reduce((tot, val) => tot + val.total_value - val.total_discount, 0 ))?.toLocaleString()}&#8381;
         </div>  
       </div>
     </div>

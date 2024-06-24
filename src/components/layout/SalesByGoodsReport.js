@@ -1,22 +1,11 @@
-import {useEffect, useState} from "react";
+import {useSalesByGoodsReport} from "@/components/UseSalesByGoodsReport";
 
-export default function SalesByGoodsReport({pos, reportDate, reLoad}) {
-  const [salesByGoodsReport, setSalesByGoodsReport] = useState([]);
-
-  useEffect(() => {
-    fetchSalesByGoodsReport(pos);
-  }, [pos, reportDate, reLoad]);
-
-
-  function fetchSalesByGoodsReport(pos) {
-    fetch('/api/salesByGoodsReport?date='+reportDate+'&pos='+pos).then(res => {
-      res.json().then(salesByGoodsReport => setSalesByGoodsReport(salesByGoodsReport))
-    });
-  }
+export default function SalesByGoodsReport({pos, reportDate}) {
+  const {data} = useSalesByGoodsReport(reportDate, pos);
 
   return (
     <div className="flex flex-col gap-2 bg-gray-100 rounded-lg mb-2 px-4 py-4">
-    {salesByGoodsReport.map(rep => (
+    {data?.map(rep => (
       <div key={rep._id} className="flex flex-row gap-2 justify-items-center justify-between">
         <div className="w-full">{rep.product}</div>
         <div className="w-full">{rep.category}</div>

@@ -1,4 +1,3 @@
-import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
 import {useEffect, useState} from "react";
 
 export default function MenuItemForm({onSubmit,menuItem}) {
@@ -53,14 +52,6 @@ export default function MenuItemForm({onSubmit,menuItem}) {
             value={basePrice}
             onChange={ev => setBasePrice(ev.target.value)}
           />
-          {/* <MenuItemPriceProps name={'Размеры'}
-                              addLabel={'Add item size'}
-                              props={sizes}
-                              setProps={setSizes} />
-          <MenuItemPriceProps name={'Дополнительные опции'}
-                              addLabel={'Add ingredients prices'}
-                              props={extraIngredientPrices}
-                              setProps={setExtraIngredientPrices}/> */}
           <button type="submit">Сохранить</button>
         </div>
       </div>

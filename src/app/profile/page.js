@@ -5,30 +5,19 @@ import PosSelector from "@/components/layout/PosSelector";
 import {useSession} from "next-auth/react";
 import {redirect} from 'next/navigation';
 import {useProfile} from "@/components/UseProfile";
+import {usePoses} from "@/components/UsePoses";
 
-import {useEffect, useState, useContext} from "react";
+import {useState, useContext} from "react";
 import toast from "react-hot-toast";
 import {CartContext} from "@/components/AppContext";
 
 export default function ProfilePage() {
   const session = useSession();
   const {status} = session;
-  const [poses, setPoses] = useState([]);
   const [redirectToMain, setRedirectToMain] = useState(false);
   const {pos, setUserPos, setPos} = useContext(CartContext);
   const {data:user, loading:profileFetched} = useProfile();
-
-  useEffect(() => {
-    fetchPoses();
-  }, []);
-
-  function fetchPoses() {
-    fetch('/api/pos').then(res => {
-      res.json().then(poses => {
-        setPoses(poses);
-      });
-    });
-  }
+  const {data:poses} = usePoses();
 
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();

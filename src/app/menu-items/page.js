@@ -1,24 +1,16 @@
 'use client';
+import Link from "next/link";
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
 import {useProfile} from "@/components/UseProfile";
-import Link from "next/link";
-import {useEffect, useState} from "react";
+import {useMenuItems} from "@/components/UseMenuItems";
 
 export default function MenuItemsPage() {
-  const [menuItems, setMenuItems] = useState([]);
-  const {loading, data} = useProfile();
+  const {data} = useProfile();
+  const {data:menuItems, isLoading:profileLoading} = useMenuItems();
 
-  useEffect(() => {
-    fetch('/api/menu-items').then(res => {
-      res.json().then(menuItems => {
-        setMenuItems(menuItems);
-      });
-    })
-  }, []);
-
-  if (loading) {
-    return 'Loading user info...';
+  if (profileLoading) {
+    return 'Загрузка списка товаров...';
   }
 
   if (!data?.admin) {

@@ -54,27 +54,27 @@ export default function OrderPage() {
             <CartProduct key={index} product={product} />
             ))
           }
-          <div className="flex items-center gap-2 py-1">
+          <div className="flex items-center gap-2 pb-1">
             <div className="grow font-semibold">
-                Итого:
+              Итого:
             </div>
             <div className="text-black font-bold">
               {subtotal.toLocaleString()}&#8381;
             </div>
           </div>
 
-          <div className="flex items-center gap-2 py-1">
+          <div className="flex items-center gap-2 pb-1">
             <div className="grow font-semibold">
-                Скидка:
+              Скидка:
             </div>
             <div className="text-black font-bold">
               {order.discount?.toLocaleString()}&#8381;
             </div>
           </div>
 
-          <div className="flex items-center gap-2 border-b py-1">
+          <div className="flex items-center gap-2 border-b pb-1">
             <div className="grow font-semibold">
-                Итого со скидкой:
+              Итого со скидкой:
             </div>
             <div className="text-black font-bold">
               {(subtotal - order?.discount).toLocaleString()}&#8381;

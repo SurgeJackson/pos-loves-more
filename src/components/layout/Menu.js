@@ -1,41 +1,25 @@
-import {useEffect, useState, useContext} from "react";
+import {useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
 import MenuItemTile from "@/components/menu/MenuItemTile";
 import MenuHeader from "@/components/menu/MenuHeader";
 import QtyButton from "@/components/QtyButton";
 import toast from "react-hot-toast";
 import {useProfile} from "@/components/UseProfile";
+import {useCategories} from "@/components/UseCategories";
+import {useMenuItems} from "@/components/UseMenuItems";
+import {useInventory} from "@/components/UseInventory";
 
 export default function Menu() {
-  const [categories, setCategories] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
   const {pos, addToCart} = useContext(CartContext);
-  const [inventory, setInventory] = useState([]);
   const {data:user} = useProfile();
+  const {data:categories} = useCategories();
+  const {data:menuItems} = useMenuItems();
+  const {data:inventory, mutate} = useInventory(pos);
 
   const [open, setOpen] = useState(0);
   const handleTabOpen = (tabCategory) => {
     setOpen(tabCategory);
   };
-
-  useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => setCategories(categories))
-    });
-    fetch('/api/menu-items').then(res => {
-      res.json().then(menuItems => setMenuItems(menuItems));
-    });
-  }, []);
-
-  useEffect(() => {
-    fetchInventory(pos);
-  }, [pos]);
-
-  async function fetchInventory(pos) {
-    fetch('/api/inventory?pos='+pos._id).then(res => {
-      res.json().then(inventory => setInventory(inventory))
-    });
-  }
 
   async function handleAddToCartButtonClick(menuItem) {    
     addToCart(menuItem);
@@ -68,7 +52,7 @@ export default function Menu() {
       success: 'Остаток изменен',
       error: 'Ошибка при изменении остатка',
     });
-    fetchInventory(pos);
+    mutate();
   }
 
   return (
@@ -76,13 +60,13 @@ export default function Menu() {
       <MenuHeader categories={categories} handleTabOpen={handleTabOpen} open={open}/>
       {categories?.length > 0 && categories.map((c, index) => (
         <div key={index} className={`grid grid-cols-5 gap-1 ${open === index ? "block" : "hidden"} `}>
-          {menuItems.filter(item => item.category._id === c._id).map(item => (
+          {menuItems?.filter(item => item.category._id === c._id).map(item => (
             <div key={item._id} className="relative">
               <MenuItemTile
                 onAddToCart={() => handleAddToCartButtonClick(item)}
                 item={item}/>
               <QtyButton
-                label={inventory.filter(product => product.id === item._id).map(prod => (prod.qty))}
+                label={inventory?.filter(product => product.id === item._id).map(prod => (prod.qty))}
                 onUpdate={handleQtyButtonClick}
                 item = {item}
                 isAdmin = {user?.admin}

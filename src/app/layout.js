@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import {Toaster} from "react-hot-toast";
+import { SWRProvider } from '@/components/SWRProvider';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
@@ -17,9 +18,11 @@ export default function RootLayout({ children }) {
       <body className={roboto.className}>
         <main className="max-w-4xl mx-auto p-2 flex flex-col">
           <AppProvider>
-            <Toaster />
-            <Header />
-            {children}
+            <SWRProvider>
+              <Toaster />
+              <Header />
+              {children}
+            </SWRProvider>
           </AppProvider>
         </main>
       </body>

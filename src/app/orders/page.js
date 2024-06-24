@@ -1,6 +1,8 @@
 'use client';
 import {useEffect, useState, useContext} from "react";
 import {useProfile} from "@/components/UseProfile";
+import {usePoses} from "@/components/UsePoses";
+
 import {CartContext, getCurrentDate} from "@/components/AppContext";
 import PayCashReport from "@/components/layout/PayCashReport";
 import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
@@ -8,33 +10,25 @@ import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
 import Trash from "@/components/icons/Trash";
 import Check from "@/components/icons/Check";
 import View from "@/components/icons/View";
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import toast from "react-hot-toast";
 
 export default function OrdersPage() {
   const {pos} = useContext(CartContext);
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const [poses, setPoses] = useState([]);
   const [uPos, setUPos] = useState();
   const [reportDate, setReportDate] = useState(getCurrentDate("-"));
   const {data:user, loading:profileFetched} = useProfile();
+  const {data:poses} = usePoses();
+
   const router = useRouter();
 
   useEffect(() => {
     const ps = uPos ? uPos : JSON.parse(localStorage.getItem("pos"))._id;
     setUPos(ps);
-    fetchPoses();
     fetchOrders(ps);
   }, [reportDate, uPos]);
-
-  function fetchPoses() {
-    fetch('/api/pos').then(res => {
-      res.json().then(poses => {
-        setPoses(poses);
-      });
-    });
-  }
 
   function fetchOrders(pos) {
     setLoadingOrders(true);
@@ -106,7 +100,7 @@ export default function OrdersPage() {
         </select>
       </div>
       
-      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate} reLoad={loadingOrders}/>
+      <PayCashReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
 
       <div className="mt-2 flex flex-col">
         {loadingOrders && (
@@ -120,8 +114,8 @@ export default function OrdersPage() {
             <div className="text-gray-500 text-xs">{new Date(Date.parse(order.createdAt)).toLocaleString()}</div>
           </div>
           <div className="text-gray-500 text-xs text-center w-full text-wrap">
-            {order.cartProducts.map((product) => (
-              <p className="truncate">
+            {order.cartProducts.map((product, key) => (
+              <p key={product._id+product.category._id+key} className="truncate">
                 {product.name + '(' + product.category.name + ') '}
               </p>
             ))}
@@ -141,7 +135,7 @@ export default function OrdersPage() {
               className="p-2 w-10 h-10">
               <View className="w-5 h-5"/>
             </button>
-          {(!order.checked || user.admin) && (
+          {(!order.checked || user?.admin) && (
             <button
               type="button"
               onClick={() => { 
@@ -164,7 +158,7 @@ export default function OrdersPage() {
         ))}
       </div>
 
-      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate} reLoad={loadingOrders}/>
+      <SalesByGoodsReport pos={uPos ? uPos : pos._id} reportDate={reportDate}/>
     </section>
   );
 }

@@ -1,15 +1,17 @@
 'use client';
 import {signIn} from "next-auth/react";
-import {useEffect, useState, useContext} from "react";
+import {useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
 import LoginError from "@/components/layout/LoginError";
 import { Suspense } from 'react';
+import {usePoses} from "@/components/UsePoses";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const [poses, setPoses] = useState([]);
+  const {data:poses} = usePoses();
+
   const [uPos, setUPos] = useState('0');
   const {setUserPos} = useContext(CartContext);
 
@@ -24,14 +26,6 @@ export default function LoginPage() {
     setLoginInProgress(false);
   }
 
-  useEffect(() => {
-    fetch('/api/pos').then(res => {
-      res.json().then(poses => {
-        setPoses(poses);
-      });
-    });
-  }, []);
-  
   function LoginErrorFallback() {
     return <>placeholder</>
   }

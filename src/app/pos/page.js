@@ -1,28 +1,14 @@
 'use client';
+import {useState} from "react";
 import DeleteButton from "@/components/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
-import {useEffect, useState} from "react";
+import {usePoses} from "@/components/UsePoses";
 import toast from "react-hot-toast";
 
 export default function PosPage() {
   const [posName, setPosName] = useState('');
-  const [poses, setPoses] = useState([]);
-  const [profileLoading, setProfileLoading] = useState(true);
   const [editedPos, setEditedPos] = useState(null);
-
-  useEffect(() => {
-    fetchPoses();
-  }, []);
-
-  function fetchPoses() {
-    fetch('/api/pos').then(res => {
-      res.json().then(poses => {
-        setProfileLoading(true);
-        setPoses(poses);
-        setProfileLoading(false);
-      });
-    });
-  }
+  const {data:poses, isLoading:profileLoading, mutate} = usePoses();
 
   async function handlePosSubmit(ev) {
     ev.preventDefault();
@@ -37,7 +23,6 @@ export default function PosPage() {
         body: JSON.stringify(data),
       });
       setPosName('');
-      fetchPoses();
       setEditedPos(null);
       if (response.ok)
         resolve();
@@ -51,6 +36,8 @@ export default function PosPage() {
       success: editedPos ? 'POS изменена' : 'POS создана',
       error: 'Error, sorry...',
     });
+
+    mutate();
   }
 
   async function handleDeleteClick(_id) {
@@ -66,12 +53,12 @@ export default function PosPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Deleting...',
-      success: 'Deleted',
-      error: 'Error',
+      loading: 'Удаление...',
+      success: 'Удалено',
+      error: 'Ошибка',
     });
 
-    fetchPoses();
+    mutate();
   }
 
   if (profileLoading) {

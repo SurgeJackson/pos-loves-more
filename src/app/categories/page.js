@@ -1,28 +1,16 @@
 'use client';
 import DeleteButton from "@/components/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useProfile} from "@/components/UseProfile";
+import {useCategories} from "@/components/UseCategories";
 import toast from "react-hot-toast";
 
 export default function CategoriesPage() {
-
   const [categoryName, setCategoryName] = useState('');
-  const [categories, setCategories] = useState([]);
-  const {loading:profileLoading, data:profileData} = useProfile();
+  const {data:profileData} = useProfile();
   const [editedCategory, setEditedCategory] = useState(null);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  function fetchCategories() {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => {
-        setCategories(categories);
-      });
-    });
-  }
+  const {data:categories, isLoading:profileLoading, mutate} = useCategories();
 
   async function handleCategorySubmit(ev) {
     ev.preventDefault();
@@ -37,7 +25,7 @@ export default function CategoriesPage() {
         body: JSON.stringify(data),
       });
       setCategoryName('');
-      fetchCategories();
+      mutate();
       setEditedCategory(null);
       if (response.ok)
         resolve();
@@ -71,11 +59,11 @@ export default function CategoriesPage() {
       error: 'Ошибка',
     });
 
-    fetchCategories();
+    mutate();
   }
 
   if (profileLoading) {
-    return 'Loading user info...';
+    return 'Загрузка категорий...';
   }
 
   if (!profileData?.admin) {
