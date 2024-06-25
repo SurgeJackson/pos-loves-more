@@ -1,4 +1,4 @@
-import NextAuth, {getServerSession} from "next-auth";
+import NextAuth from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/params";
 
 const handler = NextAuth(authOptions);

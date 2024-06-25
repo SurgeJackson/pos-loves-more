@@ -2,11 +2,11 @@
 import {useState, useContext} from "react";
 import {useRouter} from 'next/navigation';
 import {CartContext, getCurrentDate} from "@/components/AppContext";
-import {useProfile} from "@/components/UseProfile";
-import {usePoses} from "@/components/UsePoses";
-import {useOrders} from "@/components/UseOrders";
-import {usePayCashReport} from "@/components/UsePayCashReport";
-import {useSalesByGoodsReport} from "@/components/UseSalesByGoodsReport";
+import {useProfile} from "@/data/UseProfile";
+import {usePoses} from "@/data/UsePoses";
+import {useOrders} from "@/data/UseOrders";
+import {usePayCashReport} from "@/data/UsePayCashReport";
+import {useSalesByGoodsReport} from "@/data/UseSalesByGoodsReport";
 
 import PayCashReport from "@/components/layout/PayCashReport";
 import SalesByGoodsReport from "@/components/layout/SalesByGoodsReport";
@@ -85,7 +85,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto w-full">
+    <section className="mt-8 mx-auto w-full">
       <div className="flex flex-col gap-2">
         <input type="date" id="reportDate" name="reportDate" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={reportDate} placeholder="Дата" onChange={ev => (setReportDate(ev.target.value))}/>
 

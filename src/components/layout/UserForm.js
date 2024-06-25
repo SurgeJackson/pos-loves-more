@@ -1,5 +1,5 @@
 import {useState} from "react";
-import Switch from "@/components/menu/Switch";
+import Switch from "@/components/ui/Switch";
 
 export default function UserForm({user, onSave, isAdmin}) {
   const [userName, setUserName] = useState(user?.name);

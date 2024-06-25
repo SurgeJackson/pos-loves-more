@@ -1,10 +1,10 @@
 'use client';
-import DeleteButton from "@/components/DeleteButton";
+import DeleteButton from "@/components/ui/DeleteButton";
 import Left from "@/components/icons/Left";
 import MenuItemForm from "@/components/layout/MenuItemForm";
 import UserTabs from "@/components/layout/UserTabs";
-import {useProfile} from "@/components/UseProfile";
-import {useMenuItems} from "@/components/UseMenuItems";
+import {useProfile} from "@/data/UseProfile";
+import {useMenuItems} from "@/data/UseMenuItems";
 import Link from "next/link";
 import {redirect, useParams} from "next/navigation";
 import {useState} from "react";

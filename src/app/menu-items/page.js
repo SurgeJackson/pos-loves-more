@@ -2,8 +2,8 @@
 import Link from "next/link";
 import Right from "@/components/icons/Right";
 import UserTabs from "@/components/layout/UserTabs";
-import {useProfile} from "@/components/UseProfile";
-import {useMenuItems} from "@/components/UseMenuItems";
+import {useProfile} from "@/data/UseProfile";
+import {useMenuItems} from "@/data/UseMenuItems";
 
 export default function MenuItemsPage() {
   const {data} = useProfile();

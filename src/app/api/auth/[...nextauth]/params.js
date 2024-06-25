@@ -1,4 +1,4 @@
-import clientPromise from "@/libs/mongoConnect";
+import clientPromise from "@/lib/mongoConnect";
 import {UserInfo} from "../../../../models/UserInfo";
 import bcrypt from "bcrypt";
 import * as mongoose from "mongoose";

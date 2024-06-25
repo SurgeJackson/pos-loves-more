@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useCategories} from "@/components/UseCategories";
+import {useCategories} from "@/data/UseCategories";
 
 export default function MenuItemForm({onSubmit,menuItem}) {
   const [name, setName] = useState(menuItem?.name || '');

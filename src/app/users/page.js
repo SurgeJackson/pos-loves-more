@@ -1,5 +1,5 @@
 'use client';
-import {useUsers} from "@/components/UseUsers";
+import {useUsers} from "@/data/UseUsers";
 import UserTabs from "@/components/layout/UserTabs";
 import Link from "next/link";
 

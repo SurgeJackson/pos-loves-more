@@ -1,8 +1,8 @@
 'use client';
 import {useState} from "react";
-import DeleteButton from "@/components/DeleteButton";
+import DeleteButton from "@/components/ui/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
-import {usePoses} from "@/components/UsePoses";
+import {usePoses} from "@/data/UsePoses";
 import toast from "react-hot-toast";
 
 export default function PosPage() {

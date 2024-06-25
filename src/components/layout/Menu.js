@@ -2,12 +2,12 @@ import {useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
 import MenuItemTile from "@/components/menu/MenuItemTile";
 import MenuHeader from "@/components/menu/MenuHeader";
-import QtyButton from "@/components/QtyButton";
+import QtyButton from "@/components/ui/QtyButton";
 import toast from "react-hot-toast";
-import {useProfile} from "@/components/UseProfile";
-import {useCategories} from "@/components/UseCategories";
-import {useMenuItems} from "@/components/UseMenuItems";
-import {useInventory} from "@/components/UseInventory";
+import {useProfile} from "@/data/UseProfile";
+import {useCategories} from "@/data/UseCategories";
+import {useMenuItems} from "@/data/UseMenuItems";
+import {useInventory} from "@/data/UseInventory";
 
 export default function Menu() {
   const {pos, addToCart} = useContext(CartContext);

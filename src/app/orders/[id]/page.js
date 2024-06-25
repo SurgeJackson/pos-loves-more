@@ -3,8 +3,8 @@ import {CartContext, cartProductPrice} from "@/components/AppContext";
 import CartProduct from "@/components/menu/CartProduct";
 import {useParams, useSearchParams} from "next/navigation";
 import {useContext, useEffect} from "react";
-import {dbTimeForHuman} from "@/libs/datetime";
-import QRCode from "@/components/QRCode";
+import {dbTimeForHuman} from "@/lib/datetime";
+import QRCode from "@/components/ui/QRCode";
 import useSWR from 'swr';
 
 export default function OrderPage() {

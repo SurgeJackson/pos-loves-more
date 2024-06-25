@@ -2,9 +2,9 @@
 import {signIn} from "next-auth/react";
 import {useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
-import LoginError from "@/components/layout/LoginError";
+import LoginError from "@/components/ui/LoginError";
 import { Suspense } from 'react';
-import {usePoses} from "@/components/UsePoses";
+import {usePoses} from "@/data/UsePoses";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');

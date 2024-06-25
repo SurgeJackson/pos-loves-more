@@ -1,11 +1,11 @@
 'use client';
 import UserForm from "@/components/layout/UserForm";
 import UserTabs from "@/components/layout/UserTabs";
-import PosSelector from "@/components/layout/PosSelector";
+import PosSelector from "@/components/ui/PosSelector";
 import {useSession} from "next-auth/react";
 import {redirect} from 'next/navigation';
-import {useProfile} from "@/components/UseProfile";
-import {usePoses} from "@/components/UsePoses";
+import {useProfile} from "@/data/UseProfile";
+import {usePoses} from "@/data/UsePoses";
 
 import {useState, useContext} from "react";
 import toast from "react-hot-toast";

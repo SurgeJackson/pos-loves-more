@@ -1,7 +1,7 @@
 import {CartContext} from "@/components/AppContext";
 import {cartProductPrice} from "@/components/AppContext";
 import {useContext, useState} from "react";
-import Switch from "@/components/menu/Switch";
+import Switch from "@/components/ui/Switch";
 import toast from "react-hot-toast";
 
 export default function Footer() {
