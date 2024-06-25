@@ -14,7 +14,7 @@ export default function EditMenuItemPage() {
   const {id} = useParams();
   const [redirectToItems, setRedirectToItems] = useState(false);
   const {data, isloading:loading} = useProfile();
-  const {data:menuItem, isLoading} = useMenuItems(id);
+  const {data:menuItem, isLoading, mutate} = useMenuItems(id);
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
@@ -25,10 +25,13 @@ export default function EditMenuItemPage() {
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
       });
-      if (response.ok)
+      if (response.ok) {
+        mutate();
         resolve();
-      else
+      }
+      else {
         reject();
+      }
     });
 
     await toast.promise(savingPromise, {

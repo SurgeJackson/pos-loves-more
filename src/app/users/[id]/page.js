@@ -10,7 +10,7 @@ export default function EditUserPage() {
   const {data, isLoading:loading} = useProfile();
   const {id} = useParams();
   const [redirectToUsers, setRedirectToUsers] = useState(false);
-  const {data:user, isLoading} = useProfile(id);
+  const {data:user, isLoading, mutate} = useProfile(id);
 
   async function handleSaveButtonClick(ev, data) {
     ev.preventDefault();
@@ -20,10 +20,13 @@ export default function EditUserPage() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({...data, _id:id}),
       });
-      if (res.ok)
+      if (res.ok) {
+        mutate();
         resolve();
-      else
+      }
+      else {
         reject();
+      }
     });
 
     await toast.promise(promise, {
