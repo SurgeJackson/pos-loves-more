@@ -1,6 +1,6 @@
 'use client';
 import {CartContext, cartProductPrice} from "@/components/AppContext";
-import CartProduct from "@/components/menu/CartProduct";
+import CartProduct from "@/components/layout/CartProduct";
 import {useParams, useSearchParams} from "next/navigation";
 import {useContext, useEffect} from "react";
 import {dbTimeForHuman} from "@/lib/datetime";

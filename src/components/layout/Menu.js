@@ -1,7 +1,7 @@
 import {useState, useContext} from "react";
 import {CartContext} from "@/components/AppContext";
-import MenuItemTile from "@/components/menu/MenuItemTile";
-import MenuHeader from "@/components/menu/MenuHeader";
+import MenuItemTile from "@/components/layout/MenuItemTile";
+import MenuHeader from "@/components/layout/MenuHeader";
 import QtyButton from "@/components/ui/QtyButton";
 import toast from "react-hot-toast";
 import {useProfile} from "@/data/UseProfile";
