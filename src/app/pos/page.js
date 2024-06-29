@@ -1,7 +1,7 @@
 'use client';
-import {useState} from "react";
-import DeleteButton from "@/components/ui/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
+import Pos from "./Pos";
+import {useState} from "react";
 import {usePoses} from "@/data/UsePoses";
 import toast from "react-hot-toast";
 
@@ -61,9 +61,14 @@ export default function PosPage() {
     mutate();
   }
 
-  if (profileLoading) {
-    return 'Загрузка списка POS...';
+  function handleEditClick(c) {
+    setEditedPos(c);
+    setPosName(c.name);
   }
+
+  // if (profileLoading) {
+  //   return 'Загрузка списка POS...';
+  // }
 
   return (
     <section className="flex flex-col gap-4 py-2">
@@ -97,31 +102,7 @@ export default function PosPage() {
           </div>
         </div>
       </form>
-      <div>
-        <h2 className="mt-8 text-sm text-gray-500">Список POS</h2>
-        {poses?.length > 0 && poses.map(c => (
-          <div
-            key={c._id}
-            className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center">
-            <div className="grow">
-              {c.name}
-            </div>
-            <div className="flex gap-1">
-              <button type="button"
-                      onClick={() => {
-                        setEditedPos(c);
-                        setPosName(c.name);
-                      }}
-              >
-                Редактировать
-              </button>
-              <DeleteButton
-                label="Удалить"
-                onDelete={() => handleDeleteClick(c._id)} />
-            </div>
-          </div>
-        ))}
-      </div>
+      <Pos poses={poses} handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick}/>
     </section>
   );
 }

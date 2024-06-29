@@ -9,13 +9,13 @@ export default function MenuItemsPage() {
   const {data} = useProfile();
   const {data:menuItems, isLoading:profileLoading} = useMenuItems();
 
-  if (profileLoading) {
-    return 'Загрузка списка товаров...';
-  }
+  // if (profileLoading) {
+  //   return 'Загрузка списка товаров...';
+  // }
 
-  if (!data?.admin) {
-    return 'Not an admin.';
-  }
+  // if (!data?.admin) {
+  //   return 'Not an admin.';
+  // }
 
   return (
     <section className="flex flex-col gap-4 py-2">

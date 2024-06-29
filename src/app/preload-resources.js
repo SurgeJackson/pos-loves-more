@@ -1,6 +1,5 @@
-'use client'
- 
-import ReactDOM from 'react-dom'
+//'use client'
+import ReactDOM from 'react-dom';
  
 export function PreloadResources() {
   ReactDOM.preload('/api/pos', {as: 'fetch', fetchPriority: 'high'});

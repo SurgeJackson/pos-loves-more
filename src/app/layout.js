@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import {Toaster} from "react-hot-toast";
-import { SWRProvider } from '@/components/SWRProvider';
+import SWRProvider from '@/components/SWRProvider';
 import {PreloadResources} from '@/app/preload-resources';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <PreloadResources />
+      {/* <PreloadResources /> */}
       <body className={roboto.className}>
         <main className="max-w-4xl mx-auto p-2 flex flex-col">
           <AppProvider>

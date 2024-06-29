@@ -62,13 +62,13 @@ export default function CategoriesPage() {
     mutate();
   }
 
-  if (profileLoading) {
-    return 'Загрузка категорий...';
-  }
+  // if (profileLoading) {
+  //   return 'Загрузка категорий...';
+  // }
 
-  if (!profileData?.admin) {
-    return 'Not an admin';
-  }
+  // if (!profileData?.admin) {
+  //   return 'Not an admin';
+  // }
 
   return (
     <section className="flex flex-col gap-4 py-2">
