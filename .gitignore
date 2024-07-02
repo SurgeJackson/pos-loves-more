@@ -2,6 +2,6 @@
 .DS_Store?
 ._*
 .next
+.env
 node_modules
 build
-.env
