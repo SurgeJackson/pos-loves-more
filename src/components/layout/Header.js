@@ -6,7 +6,6 @@ import {CartContext} from "@/components/AppContext";
 import Orders from "@/components/icons/Orders";
 import Profile from "@/components/icons/Profile";
 import Logout from "@/components/icons/Logout";
-import Login from "@/components/icons/Login";
 
 function AuthLinks({status, userName, pos}) {
   if (status === 'authenticated') {
@@ -24,17 +23,9 @@ function AuthLinks({status, userName, pos}) {
         </Link>
         <button
           onClick={() => signOut({redirect: true, callbackUrl: "/"})}
-          className="bg-primary rounded-full text-white px-8 py-2">
-          <Logout />
+          className="bg-primary rounded-full text-white px-8">
+          <Logout className="w-6 h-6"/>
         </button>
-      </>
-    );
-  }
-  if (status === 'unauthenticated') {
-    return (
-      <>
-        <Link href={'/login'} className="bg-primary rounded-full text-white px-8 py-2">
-        <Login /></Link>
       </>
     );
   }
@@ -52,7 +43,7 @@ export default function Header() {
   return (
     <header className="bg-white">
       <div className="flex items-center justify-between">
-        <nav className="flex items-center gap-2 text-gray-500 font-semibold">
+        <nav className="flex items-center gap-2 text-gray-500 font-semibold py-2">
           <Link className="text-black border-b-8 border-[#fff089] font-semibold text-lg" href={'/'}>
           LOVES MORE
           </Link>

@@ -92,7 +92,7 @@ export default function QtyButton({className, label, onUpdate, item, isAdmin}) {
   }
 
   return (
-    <button className={cn(label <= 5 ? "bg-primary text-white" : label <= 20 ? "bg-yellow-400" : "bg-green-500", className)} type="button"
+    <button className={cn(((label <= 5) || (!label)) ? "bg-primary text-white" : label <= 20 ? "bg-yellow-400" : "bg-green-500", className)} type="button"
         onClick={ev => {setShowConfirm(isAdmin); ev.stopPropagation();}}>
       {label}
     </button>

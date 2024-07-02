@@ -13,8 +13,14 @@ async function getInitialData() {
     const response = await fetch(baseURL + api[i]);
     const json = await response.json();
     data = {...data, [api[i]]: json};
+    // if (api[i] == "/api/pos") {
+    //   for (let j = 0; j < json.length; j++) {
+    //     const response = await fetch(baseURL + '/api/inventory?pos=' + json[j]._id);
+    //     const inventory = await response.json();
+    //     data = {...data, ['/api/inventory?pos='+json[j]._id]: inventory};
+    //   }
+    // }
   }
-
   return data;
 }
 
