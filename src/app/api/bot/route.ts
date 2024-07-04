@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
-import { Bot, webhookCallback, Context, session, SessionFlavor } from 'grammy';
+import { Bot, Keyboard, webhookCallback, Context, session, SessionFlavor } from 'grammy';
 import { Menu, MenuRange } from '@grammyjs/menu';
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -99,6 +99,24 @@ function createDishMenu(dish: string) {
 mainMenu.register(dishMenu)
 
 bot.use(mainMenu)
+
+bot.command('test', async (ctx) => {
+    const startKeyboard = new Keyboard()
+    .text('HTML')
+    .text('CSS')
+    .row()
+    .text('JavaScript')
+    .text('React')
+    .resized();
+    
+    await ctx.reply(
+        'Привет! Я - Frontend Interview Prep Bot 🤖 \nЯ помогу тебе подготовиться к интервью по фронтенду',
+    );
+    
+    await ctx.reply('С чего начнем? Выбери тему вопроса в меню 👇', {
+        reply_markup: startKeyboard,
+    });
+});
 
 bot.command('start', ctx => ctx.reply(mainText, { reply_markup: mainMenu }))
 bot.command('help', async ctx => {
