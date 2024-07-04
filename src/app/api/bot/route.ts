@@ -120,12 +120,4 @@ bot.command('fav', async ctx => {
     await ctx.reply(`Those are your favorite dishes:\n\n${names}`)
 })
 
-bot.catch(console.error.bind(console))
-bot.start()
-
-
-
-
-
-
 export const POST = webhookCallback(bot, 'std/http');
