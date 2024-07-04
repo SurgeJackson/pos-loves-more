@@ -17,6 +17,7 @@
     "caniuse-lite": "^1.0.30001616",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "grammy": "^1.26.1",
     "lucide-react": "^0.378.0",
     "micro": "^10.0.1",
     "moment": "^2.30.1",
