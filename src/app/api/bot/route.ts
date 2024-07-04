@@ -6,7 +6,6 @@ import { Menu, MenuRange } from '@grammyjs/menu';
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.');
 
-
 /** This is how the dishes look that this bot is managing */
 interface Dish {
     id: string
@@ -18,6 +17,13 @@ interface SessionData {
 }
 type MyContext = Context & SessionFlavor<SessionData>
 
+/**
+ * All known dishes. Users can rate them to store which ones are their favorite
+ * dishes.
+ *
+ * They can also decide to delete them. If a user decides to delete a dish, it
+ * will be gone for everyone.
+ */
 const dishDatabase: Dish[] = [
     { id: 'pasta', name: 'Pasta' },
     { id: 'pizza', name: 'Pizza' },
@@ -25,7 +31,7 @@ const dishDatabase: Dish[] = [
     { id: 'entrct', name: 'Entrecôte' },
 ]
 
-const bot = new Bot<MyContext>(token);
+const bot = new Bot<MyContext>(token)
 
 bot.use(
     session({
@@ -113,6 +119,13 @@ bot.command('fav', async ctx => {
         .join('\n')
     await ctx.reply(`Those are your favorite dishes:\n\n${names}`)
 })
+
+bot.catch(console.error.bind(console))
+bot.start()
+
+
+
+
 
 
 export const POST = webhookCallback(bot, 'std/http');
