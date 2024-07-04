@@ -1,19 +1,12 @@
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 import { Bot, webhookCallback } from 'grammy';
-import { User } from "grammy/types";
-import { Composer } from "grammy";
 
 function getFullName(from) {
 	return from.last_name
 		? `${from.first_name} ${from.last_name}`
 		: from.first_name;
 }
-
-const composer = new Composer();
-const filterCommands = composer.filter((ctx) =>
-    ctx.chat ? ctx.chat.type === "private" : false
-  );
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
