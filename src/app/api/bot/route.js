@@ -26,7 +26,7 @@ bot.command("start", async (ctx) => {
   })
 
 // about user
-filterCommands.command("me", async (ctx) => {
+bot.command("me", async (ctx) => {
     const msg = `Hi ${getFullName(ctx.from)}.
     
     Here's a little info about yourself on telegram:
