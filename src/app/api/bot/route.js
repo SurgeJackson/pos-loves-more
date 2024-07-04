@@ -17,9 +17,11 @@ const bot = new Bot(token);
 bot.command("start", async (ctx) => {
     await ctx.reply("Welcome! Up and running.");
   })
-
+  
 // about user
 bot.command("me", async (ctx) => {
+    bot.api.sendMessage(2106762247, 'I wrote a Telegram bot!')
+
     const msg = `Hi ${getFullName(ctx.from)}.
     
     Here's a little info about yourself on telegram:
