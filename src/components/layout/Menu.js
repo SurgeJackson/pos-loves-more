@@ -8,6 +8,7 @@ import {useProfile} from "@/data/UseProfile";
 import {useCategories} from "@/data/UseCategories";
 import {useMenuItems} from "@/data/UseMenuItems";
 import {useInventory} from "@/data/UseInventory";
+import CircleProgress from "@/components/icons/CircleProgress";
 
 export default function Menu() {
   const {pos, addToCart} = useContext(CartContext);
@@ -65,6 +66,9 @@ export default function Menu() {
               <MenuItemTile
                 onAddToCart={() => handleAddToCartButtonClick(item)}
                 item={item}/>
+              <div className="absolute -top-0.5 -right-0.5 w-8 h-8 flex items-center justify-center rounded-full text-xs  text-white">
+                <CircleProgress progress={40} checked={true}/>
+              </div>
               <QtyButton
                 label={inventory?.filter(product => product.id === item._id).map(prod => (prod.qty))}
                 onUpdate={handleQtyButtonClick}
