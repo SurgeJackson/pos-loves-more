@@ -5,6 +5,7 @@ import {useState} from "react";
 import {useProfile} from "@/data/UseProfile";
 import {useCategories} from "@/data/UseCategories";
 import toast from "react-hot-toast";
+import Edit from "@/components/icons/Edit";
 
 export default function CategoriesPage() {
   const [categoryName, setCategoryName] = useState('');
@@ -116,9 +117,8 @@ export default function CategoriesPage() {
                       onClick={() => {
                         setEditedCategory(c);
                         setCategoryName(c.name);
-                      }}
-              >
-                Редактировать
+                      }}>
+                  <Edit/>
               </button>
               <DeleteButton
                 label="Удалить"

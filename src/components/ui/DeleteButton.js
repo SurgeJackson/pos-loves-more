@@ -1,4 +1,5 @@
 import {useState} from "react";
+import Trash from "@/components/icons/Trash";
 
 export default function DeleteButton({label,onDelete}) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -29,7 +30,8 @@ export default function DeleteButton({label,onDelete}) {
 
   return (
     <button type="button" onClick={() => setShowConfirm(true)}>
-      {label}
+       {/* {label} */}
+       <Trash />
     </button>
   );
 }

@@ -11,3 +11,13 @@ export async function GET() {
     return Response.json([]);
   }
 }
+
+export async function DELETE(req) {
+  mongoose.connect(process.env.MONGO_URL);
+  const url = new URL(req.url);
+  const _id = url.searchParams.get('_id');
+  if (await isAdmin()) {
+    await User.deleteOne({_id});
+  }
+  return Response.json(true);
+}

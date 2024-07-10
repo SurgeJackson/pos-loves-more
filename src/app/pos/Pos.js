@@ -1,4 +1,5 @@
 import DeleteButton from "@/components/ui/DeleteButton";
+import Edit from "@/components/icons/Edit";
 
 export default function Pos({poses, handleEditClick, handleDeleteClick}) {
   return (
@@ -14,7 +15,7 @@ export default function Pos({poses, handleEditClick, handleDeleteClick}) {
             <div className="flex gap-1">
               <button type="button"
                       onClick={() => handleEditClick(c)}>
-                Редактировать
+                <Edit/>
               </button>
               <DeleteButton
                 label="Удалить"

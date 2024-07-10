@@ -99,7 +99,7 @@ export default function QtyButton({className, label, item, isAdmin, onUpdate, on
 
   return (
     <>
-      {(isAdmin || (!isAdmin && requested?.isOpen))&& (<CircleProgress
+      {(isAdmin || (!isAdmin && requested?.isOpen)) && (<CircleProgress
         progress={
           requested?.yearMonthDayUTC ? (days < 8 ? (days * 100 / 7) : 100) : 100
         }
