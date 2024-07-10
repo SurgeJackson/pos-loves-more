@@ -3,7 +3,7 @@ export default function CircleProgress({className="w-6 h-6", progress, checked})
     const radius = size/2 - 4;
     const circumference = 2 * 3.14 * radius;
     return (
-        <svg className="-rotate-90"
+        <svg className={className}
                 viewBox={"0 0 " + size + " " + size}>
             <circle r={radius} cx={size/2} cy={size/2} 
                 fill="transparent"
@@ -12,7 +12,7 @@ export default function CircleProgress({className="w-6 h-6", progress, checked})
             </circle>
             <circle r={radius} cx={size/2} cy={size/2}  
                 fill="transparent"
-                stroke="navy"
+                stroke="blue"
                 strokeLinecap="round"
                 strokeWidth={5}
                 strokeDasharray={circumference + "px"}

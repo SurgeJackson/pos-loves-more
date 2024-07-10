@@ -2,10 +2,11 @@ import {useState} from "react";
 import Plus from "@/components/icons/Plus";
 import Minus from "@/components/icons/Minus";
 import BackSpace from "@/components/icons/BackSpace";
+import CircleProgress from "@/components/icons/CircleProgress";
 
 import { cn } from "@/lib/utils";
 
-export default function QtyButton({className, label, onUpdate, item, isAdmin}) {
+export default function QtyButton({className, label, item, isAdmin, onUpdate, onRequest, requested, requestedId}) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [qty, setQty] = useState("0");
   
@@ -85,6 +86,9 @@ export default function QtyButton({className, label, onUpdate, item, isAdmin}) {
             <button type="button" className="primary" onClick={() => {onUpdate(item, qty); setQty("0"); setShowConfirm(false);}}>
               Изменить
             </button>
+            <button type="button" className="" onClick={() => {onRequest(item, requested); setShowConfirm(false);}}>
+              {requested?.isOpen ? `Подтвердить POS` : `Запросить POS`}
+            </button>
           </div>
         </div>
       </div>
@@ -92,9 +96,18 @@ export default function QtyButton({className, label, onUpdate, item, isAdmin}) {
   }
 
   return (
-    <button className={cn(((label <= 5) || (!label)) ? "bg-primary text-white" : label <= 20 ? "bg-yellow-400" : "bg-green-500", className)} type="button"
+    <>
+      {isAdmin && (<CircleProgress
+        progress={
+          requested?.yearMonthDayUTC ? Math.round((new Date().getTime() - new Date(requested?.yearMonthDayUTC).getTime()) / (24 * 1000 * 3600))* 100 / 7 : 100
+        }
+        checked={requested?.isOpen}
+        className={"absolute -top-0.5 -right-0.5 w-8 h-8 -rotate-90"}
+      />)}
+      <button className={cn(((label <= 5) || (!label)) ? "bg-primary text-white" : label <= 20 ? "bg-yellow-400" : "bg-green-500", className)} type="button"
         onClick={ev => {setShowConfirm(isAdmin); ev.stopPropagation();}}>
-      {label}
-    </button>
+        {label}
+      </button>
+    </>
   );
 }

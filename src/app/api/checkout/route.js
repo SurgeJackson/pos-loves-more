@@ -33,5 +33,5 @@ export async function POST(req) {
     discount: orderDiscount,
   });
 
-  return Response.json(process.env.NEXTAUTH_URL + 'orders/' + orderDoc._id.toString() + '?clear-cart=1');
+  return Response.json(process.env.NEXTAUTH_URL + '/orders/' + orderDoc._id.toString() + '?clear-cart=1');
 }
