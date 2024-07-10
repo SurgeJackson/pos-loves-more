@@ -113,8 +113,8 @@ export default function Menu() {
   }
 
   async function handleRequestButtonClick(item, requested) {
-    if (!requested?.isOpen) {
-      await updateInvRequest(item, requested._id);
+    if (requested?.isOpen) {
+      await updateInvRequest(item, requested?._id);
     } else {
       await createInvRequest(item);
     }

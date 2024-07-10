@@ -95,11 +95,13 @@ export default function QtyButton({className, label, item, isAdmin, onUpdate, on
     );
   }
 
+  const days = Math.round((new Date().getTime() - new Date(requested?.yearMonthDayUTC).getTime()) / (24 * 1000 * 3600)) - 1;
+
   return (
     <>
-      {isAdmin && (<CircleProgress
+      {(isAdmin || (!isAdmin && requested?.isOpen))&& (<CircleProgress
         progress={
-          requested?.yearMonthDayUTC ? Math.round((new Date().getTime() - new Date(requested?.yearMonthDayUTC).getTime()) / (24 * 1000 * 3600))* 100 / 7 : 100
+          requested?.yearMonthDayUTC ? (days < 8 ? (days * 100 / 7) : 100) : 100
         }
         checked={requested?.isOpen}
         className={"absolute -top-0.5 -right-0.5 w-8 h-8 -rotate-90"}

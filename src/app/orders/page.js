@@ -1,7 +1,8 @@
 'use client';
 import {useState, useContext} from "react";
 import {useRouter} from 'next/navigation';
-import {CartContext, getCurrentDate} from "@/components/AppContext";
+import {CartContext} from "@/components/AppContext";
+import {getCurrentDate} from "@/lib/datetime";
 import {useProfile} from "@/data/UseProfile";
 import {usePoses} from "@/data/UsePoses";
 import {useOrders} from "@/data/UseOrders";
