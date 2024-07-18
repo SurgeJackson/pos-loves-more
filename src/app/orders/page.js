@@ -27,7 +27,9 @@ export default function OrdersPage() {
             mutate} = useOrders(reportDate, uPos ? uPos : pos._id);
   const {data:payCashReportData, 
           isLoading:loadingPayCashReport, 
-            mutate:mutatePayCashReport} = usePayCashReport(reportDate, uPos ? uPos : pos._id);
+            mutate:mutatePayCashReport} = usePayCashReport(reportDate, 
+            user?.admin ? "" : 
+              (uPos ? uPos : pos._id));
   const {data:salesByGoodsReportData, 
           isLoading:loadingSalesByGoodsReport, 
             mutate:mutateSalesByGoodsReport} = useSalesByGoodsReport(reportDate, uPos ? uPos : pos._id);
