@@ -7,13 +7,15 @@ import toast from "react-hot-toast";
 export default function Footer() {
   const {cartProducts, removeCartProduct, pos} = useContext(CartContext);
   const [payCash, setPayCash] = useState(false);
-  const [discount, setDiscount] = useState();
+  const [discount, setDiscount] = useState(null);
+  const [percentDiscount, setPercentDiscount] = useState(false);
 
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
   }
-  subtotal -= discount ? discount : 0;
+
+  percentDiscount ? subtotal = subtotal * ((100 - discount) / 100) : subtotal -= discount ? discount : 0;
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
@@ -66,7 +68,11 @@ export default function Footer() {
       {cartProducts?.length > 0 && (<>
       <Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
 
-      <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={discount} placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
+      <div className="flex flex-row gap-4">
+        <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={discount} placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
+
+        <Switch className="flex flex-row justify-end py-2 text-lg font-bold" label={"%"} id="PercentDiscount" onChange={ev => setPercentDiscount(ev.target.checked)}/>
+      </div>
 
       <input type="text" id="coupon" name="coupon" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Промо код"/></>
       )}
