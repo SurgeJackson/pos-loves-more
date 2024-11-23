@@ -1,12 +1,12 @@
 import {AppProvider} from "@/components/AppContext";
 import Header from "@/components/layout/Header";
-import { Inter } from 'next/font/google'
+//import { Inter } from 'next/font/google'
 import './globals.css'
 import {Toaster} from "react-hot-toast";
 import SWRProvider from '@/components/SWRProvider';
 import {PreloadResources} from '@/app/preload-resources';
 
-const roboto = Inter({ subsets: ['latin'], weight: ['400', '500', '700'] })
+//const roboto = Inter({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
 export const metadata = {
   title: 'POS LOVES MORE',
