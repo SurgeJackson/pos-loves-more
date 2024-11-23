@@ -126,6 +126,7 @@ export default function OrdersPage() {
               + ' p-1 rounded-md text-white text-center text-sm w-full'}>
                 {order.payCash ? 'Наличные' : 'Карта'}
             </div>
+            {order.promoCode ? "Промо код: " + order.promoCode : ""}
           </div>
           <div className="text-right flex flex-wrap justify-center gap-1 w-full">
             <button

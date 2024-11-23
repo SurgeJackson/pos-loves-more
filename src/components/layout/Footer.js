@@ -3,19 +3,41 @@ import {cartProductPrice} from "@/components/AppContext";
 import {useContext, useState} from "react";
 import Switch from "@/components/ui/Switch";
 import toast from "react-hot-toast";
+import useSWR from 'swr';
+import Check from "@/components/icons/Check";
+import X from "@/components/icons/X";
+
+import {cn} from "@/lib/utils";
 
 export default function Footer() {
   const {cartProducts, removeCartProduct, pos} = useContext(CartContext);
   const [payCash, setPayCash] = useState(false);
-  const [discount, setDiscount] = useState(null);
+  const [discount, setDiscount] = useState("");
   const [percentDiscount, setPercentDiscount] = useState(false);
-
+  const [promoCode, setPromoCode] = useState(null);
+  const [promoCodeAccepted, setPromoCodeAccepted] = useState(false);
+  const [promoCodeDiscount, setPromoCodeDiscount] = useState(0);
+  
+  const {data:promo} = useSWR('/api/clients?_id=' + ((promoCode != null) ? promoCode : 0));
+  
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
   }
 
+  let total = subtotal;
+
   percentDiscount ? subtotal = subtotal * ((100 - discount) / 100) : subtotal -= discount ? discount : 0;
+
+  let discountAmount = total - subtotal;
+  let promoDiscountAmount = 0;
+
+  if (promoCodeDiscount) {
+    promoDiscountAmount =  subtotal * ((promoCodeDiscount) / 100);
+    subtotal = subtotal * ((100 - promoCodeDiscount) / 100);
+  }
+
+  let totalDiscount = total - subtotal;
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
@@ -28,7 +50,11 @@ export default function Footer() {
             cartProducts,
             payCash,
             pos,
-            discount,
+            totalDiscount,
+            discountAmount,
+            promoDiscountAmount,
+            promoCode,
+            promoCodeAccepted
           }),
         }).then(async (response) => {
           if (response.ok) {
@@ -69,12 +95,38 @@ export default function Footer() {
       <Switch className="flex flex-row justify-end py-2" label={"Оплата наличными"} id="PayCash" onChange={ev => setPayCash(ev.target.checked)}/>
 
       <div className="flex flex-row gap-4">
-        <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={discount} placeholder="Скидка" onChange={ev => (setDiscount(ev.target.value))}/>
+        <input type="number" id="discount" name="discount" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={discount} placeholder="Скидка" onChange={ev => {setDiscount(ev.target.value);}}/>
 
-        <Switch className="flex flex-row justify-end py-2 text-lg font-bold" label={"%"} id="PercentDiscount" onChange={ev => setPercentDiscount(ev.target.checked)}/>
+        <Switch className="flex flex-row justify-end py-2 text-lg font-bold" label={"%"} id="PercentDiscount" checked={percentDiscount} onChange={ev => {setPercentDiscount(ev.target.checked);}}/>
       </div>
-
-      <input type="text" id="coupon" name="coupon" className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Промо код"/></>
+      <div className="flex flex-row gap-4 items-center">
+        <input type="text" id="coupon" name="coupon" className="w-full px-4 border border-gray-300 rounded-lg" placeholder="Промо код"
+          onChange={ev => {
+                setPromoCode(ev.target.value);
+                setPromoCodeAccepted(false);
+                setPromoCodeDiscount(0);
+              }
+              }/>
+        {(promo?.promo == promoCode) && promoCode && (<>        
+          <button disabled={promoCodeAccepted || !promo?.promo_active} type="button" className="p-2 w-10 h-10"
+            onClick={() => {
+                setPromoCodeAccepted(true);
+                setPromoCodeDiscount(promo?.promo_percent);
+              } }>
+            {(promo?.promo_active) && (
+              <Check className={cn("w-5 h-5", {"text-green-500": !promoCodeAccepted})}/>
+            )}  
+            {(!promo?.promo_active) && (
+              <X className="w-5 h-5 text-red-500"/>
+            )}
+          </button>
+          {(promo?.promo_active) && (
+            <div className="grow">{promo?.promo_percent + "%"}</div>
+          )}
+        </>
+        )}
+      </div>
+      </>
       )}
 
       <div onClick={proceedToCheckout} className={`cursor-pointer text-center rounded-lg max-w-auto p-4 text-sm ${cartProducts?.length > 0 ? "bg-primary text-white" : "text-body-color bg-gray-200 cursor-default"}`}>

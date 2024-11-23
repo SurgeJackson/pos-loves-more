@@ -58,6 +58,24 @@ export default function OrderPage() {
               Скидка:
             </div>
             <div className="text-black font-bold">
+              {order.discountAmount?.toLocaleString()}&#8381;
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pb-1">
+            <div className="grow font-semibold">
+              Скидка по промо коду{order.promoCode ? " "+order.promoCode : ""}:
+            </div>
+            <div className="text-black font-bold">
+              {order.promoDiscountAmount?.toLocaleString()}&#8381;
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pb-1">
+            <div className="grow font-semibold">
+              Скидка итого:
+            </div>
+            <div className="text-black font-bold">
               {order.discount?.toLocaleString()}&#8381;
             </div>
           </div>

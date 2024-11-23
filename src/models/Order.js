@@ -12,6 +12,9 @@ const OrderSchema = new Schema({
   payCash: {type: Boolean, default: false},
   pos: Object,
   discount: {type: Number},
+  discountAmount: {type: Number},
+  promoDiscountAmount: {type: Number},
+  promoCode: {type: Number},
   checked: {type: Boolean, default: false},
 }, {timestamps: true});
 
