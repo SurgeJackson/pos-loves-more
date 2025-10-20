@@ -124,7 +124,7 @@ export default function Menu() {
     <section className="flex flex-col gap-4 py-2">
       <MenuHeader categories={categories} handleTabOpen={handleTabOpen} open={open}/>
       {categories?.length > 0 && categories.map((c, index) => (
-        <div key={index} className={`grid grid-cols-5 gap-1 ${open === index ? "block" : "hidden"} `}>
+        <div key={index} className={`grid grid-cols-6 gap-1 ${open === index ? "block" : "hidden"} `}>
           {menuItems?.filter(item => item.category._id === c._id).map(item => (
             <div key={item._id} className="relative">
               <MenuItemTile

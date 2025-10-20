@@ -35,7 +35,10 @@ export async function GET(req) {
   }
 
   return Response.json(
-    await MenuItem.find().populate("category")
+    await MenuItem.find()
+      .sort({ name: 1 })
+      .collation({ locale: 'en_US', numericOrdering: true })
+      .populate('category')
   );
 }
 
