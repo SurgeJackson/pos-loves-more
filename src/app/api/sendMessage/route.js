@@ -1,6 +1,6 @@
 const { Bot, InputFile } = require("grammy");
 
-const bot = new Bot("7338662098:AAF0CVTWRaQfeu3Ox4P-wvxIO95KKo7hutg");
+const bot = new Bot("");
 
 export async function POST(req) {
     const {clients} = await req.json();
